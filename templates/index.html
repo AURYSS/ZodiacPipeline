@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Data Pipeline - Zodiacal Clusters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    
+    <div class="app-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+                <div class="logo-text">
+                    <h2>ZodiacPipeline</h2>
+                    <span>v2.0.0-enterprise</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#upload" class="nav-item active">
+                    <span class="nav-icon">⏏</span>
+                    Ingesta de Datos
+                </a>
+                <a href="#explore" class="nav-item">
+                    <span class="nav-icon">⚲</span>
+                    Exploración
+                </a>
+                <a href="#train" class="nav-item">
+                    <span class="nav-icon">⚙</span>
+                    Modelado (ML)
+                </a>
+                <a href="#results" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    Resultados
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="dot online"></span>
+                    <span>Servidor Operativo</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <header class="topbar">
+                <div class="breadcrumbs">Proyecto > Models > Unsupervised > <span class="highlight">Zodiacal Clustering</span></div>
+                <div class="user-profile">
+                    <div class="avatar">ENG</div>
+                </div>
+            </header>
+
+            <div class="content-scroll">
+                
+                <!-- Section 1: Ingesta -->
+                <section id="upload" class="dashboard-panel">
+                    <div class="panel-header">
+                        <h3>1. Ingesta de Datos (Data Ingestion)</h3>
+                        <span class="badge badge-neutral">CSV</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="upload-zone">
+                            <input type="file" id="file-input" accept=".csv" class="file-input" />
+                            <div class="upload-actions">
+                                <button id="upload-btn" class="btn btn-primary">Ejecutar Ingesta</button>
+                                <button id="demo-btn" class="btn btn-outline">Cargar Dataset de Prueba</button>
+                            </div>
+                        </div>
+                        <div class="terminal-log">
+                            <span class="prompt">></span> <span id="upload-status" class="log-msg">Esperando archivo CSV...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Exploración -->
+                <section id="explore" class="dashboard-panel" style="display:none;">
+                    <div class="panel-header">
+                        <h3>2. Exploración y Filtrado (EDA)</h3>
+                        <div class="panel-actions">
+                            <button id="apply-filter-btn" class="btn btn-sm btn-primary">Aplicar Filtros</button>
+                            <button id="download-filtered-btn" class="btn btn-sm btn-outline">Exportar Datos</button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="filter-bar">
+                            <div class="form-group">
+                                <label>Categoría (Atributo)</label>
+                                <select id="category-col" class="form-control">
+                                    <option value="">-- Ninguno --</option>
+                                    <option value="Signo">Signo Zodiacal</option>
+                                    <option value="Elemento">Elemento</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Valor</label>
+                                <select id="category-val" class="form-control">
+                                    <option value="">-- Todos --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Statistics Grid -->
+                        <div class="metrics-grid" id="stats-container">
+                            <!-- Populated via JS -->
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="data-table-wrapper">
+                            <table class="data-table" id="data-table">
+                                <thead id="table-head"></thead>
+                                <tbody id="table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Modelado -->
+                <section id="train" class="dashboard-panel" style="display:none;">
+                    <div class="panel-header">
+                        <h3>3. Entrenamiento del Modelo (Unsupervised Learning)</h3>
+                        <span class="badge badge-warning">Computación Activa</span>
+                    </div>
+                    
+                    <div class="panel-body">
+                        
+                        <div class="split-layout">
+                            <!-- Column 1: Configuración -->
+                            <div class="config-col">
+                                <h4 class="sub-heading">Configuración del Algoritmo</h4>
+                                
+                                <div class="algo-selector">
+                                    <div class="algo-option active" data-algo="kmeans">
+                                        <div class="radio-circle"></div>
+                                        <div>
+                                            <strong>K-Means</strong>
+                                            <p>Optimización basada en centroides</p>
+                                        </div>
+                                    </div>
+                                    <div class="algo-option" data-algo="agglomerative">
+                                        <div class="radio-circle"></div>
+                                        <div>
+                                            <strong>Hierarchical (Agglomerative)</strong>
+                                            <p>Clustering jerárquico bottom-up</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="params-box">
+                                    <div class="form-group">
+                                        <label>Hiperparámetro: n_clusters (K)</label>
+                                        <input type="number" id="n-clusters" value="3" min="2" max="10" class="form-control">
+                                    </div>
+                                    <div class="form-group" id="linkage-group" style="display:none;">
+                                        <label>Hiperparámetro: linkage</label>
+                                        <select id="linkage-method" class="form-control">
+                                            <option value="ward">ward (Minimizar varianza)</option>
+                                            <option value="complete">complete (Maximum linkage)</option>
+                                            <option value="average">average (UPGMA)</option>
+                                            <option value="single">single (Minimum linkage)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Column 2: Features & Action -->
+                            <div class="features-col">
+                                <h4 class="sub-heading">Vectores de Características (Features)</h4>
+                                <div class="checkbox-grid" id="features-checkboxes">
+                                    <!-- Populated via JS -->
+                                </div>
+
+                                <div class="train-action-box">
+                                    <button id="train-btn" class="btn btn-primary btn-block">Iniciar Proceso de Entrenamiento (Fit & Predict)</button>
+                                    <div class="terminal-log mt-3">
+                                        <span class="prompt">></span> <span id="train-status" class="log-msg">Esperando configuración...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Section 4: Resultados -->
+                <section id="results" class="dashboard-panel" style="display:none;">
+                    <div class="panel-header">
+                        <h3>4. Resultados (Inferencia)</h3>
+                        <div class="panel-actions">
+                            <button id="download-results-btn" class="btn btn-sm btn-success">Exportar Modelo & Predicciones</button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="data-table-wrapper">
+                            <table class="data-table" id="results-table">
+                                <thead id="results-table-head"></thead>
+                                <tbody id="results-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        // Simple sidebar navigation highlights
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
