@@ -3,48 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Data Pipeline - Zodiacal Clusters</title>
+    <title>AI Workspace - Zodiacal Clusters</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     
-    <div class="app-layout">
+    <!-- Background Animated Mesh -->
+    <div class="bg-mesh">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="app-layout glass-panel">
         
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+                <div class="logo-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="logo-icon"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
                 <div class="logo-text">
-                    <h2>ZodiacPipeline</h2>
-                    <span>v2.0.0-enterprise</span>
+                    <h2>AI.Studio</h2>
+                    <span>Enterprise v3.0</span>
                 </div>
             </div>
 
             <nav class="sidebar-nav">
                 <a href="#upload" class="nav-item active">
                     <span class="nav-icon">⏏</span>
-                    Ingesta de Datos
+                    Data Ingestion
                 </a>
                 <a href="#explore" class="nav-item">
                     <span class="nav-icon">⚲</span>
-                    Exploración
+                    Exploratory Analysis
                 </a>
                 <a href="#train" class="nav-item">
                     <span class="nav-icon">⚙</span>
-                    Modelado (ML)
+                    Model Training
                 </a>
                 <a href="#results" class="nav-item">
                     <span class="nav-icon">📊</span>
-                    Resultados
+                    AI Insights & Charts
                 </a>
             </nav>
 
             <div class="sidebar-footer">
                 <div class="status-indicator">
-                    <span class="dot online"></span>
-                    <span>Servidor Operativo</span>
+                    <div class="pulse-dot"></div>
+                    <span>System Online</span>
                 </div>
             </div>
         </aside>
@@ -53,9 +66,9 @@
         <main class="main-content">
             
             <header class="topbar">
-                <div class="breadcrumbs">Proyecto > Models > Unsupervised > <span class="highlight">Zodiacal Clustering</span></div>
+                <div class="breadcrumbs">Workspace > Models > Unsupervised > <span class="highlight">Zodiacal Clustering</span></div>
                 <div class="user-profile">
-                    <div class="avatar">ENG</div>
+                    <div class="avatar glow-avatar">ENG</div>
                 </div>
             </header>
 
@@ -65,18 +78,15 @@
                 <section id="upload" class="dashboard-panel">
                     <div class="panel-header">
                         <h3>1. Ingesta de Datos (Data Ingestion)</h3>
-                        <span class="badge badge-neutral">CSV</span>
+                        <span class="badge badge-neon">CSV</span>
                     </div>
                     <div class="panel-body">
                         <div class="upload-zone">
                             <input type="file" id="file-input" accept=".csv" class="file-input" />
                             <div class="upload-actions">
-                                <button id="upload-btn" class="btn btn-primary">Ejecutar Ingesta</button>
+                                <button id="upload-btn" class="btn btn-primary btn-glow">Ejecutar Ingesta</button>
                                 <button id="demo-btn" class="btn btn-outline">Cargar Dataset de Prueba</button>
                             </div>
-                        </div>
-                        <div class="terminal-log">
-                            <span class="prompt">></span> <span id="upload-status" class="log-msg">Esperando archivo CSV...</span>
                         </div>
                     </div>
                 </section>
@@ -87,12 +97,12 @@
                         <h3>2. Exploración y Filtrado (EDA)</h3>
                         <div class="panel-actions">
                             <button id="apply-filter-btn" class="btn btn-sm btn-primary">Aplicar Filtros</button>
-                            <button id="download-filtered-btn" class="btn btn-sm btn-outline">Exportar Datos</button>
+                            <button id="download-filtered-btn" class="btn btn-sm btn-outline">Exportar</button>
                         </div>
                     </div>
                     
                     <div class="panel-body">
-                        <div class="filter-bar">
+                        <div class="filter-bar glass-inner">
                             <div class="form-group">
                                 <label>Categoría (Atributo)</label>
                                 <select id="category-col" class="form-control">
@@ -115,7 +125,7 @@
                         </div>
 
                         <!-- Data Table -->
-                        <div class="data-table-wrapper">
+                        <div class="data-table-wrapper glass-inner">
                             <table class="data-table" id="data-table">
                                 <thead id="table-head"></thead>
                                 <tbody id="table-body"></tbody>
@@ -127,35 +137,34 @@
                 <!-- Section 3: Modelado -->
                 <section id="train" class="dashboard-panel" style="display:none;">
                     <div class="panel-header">
-                        <h3>3. Entrenamiento del Modelo (Unsupervised Learning)</h3>
-                        <span class="badge badge-warning">Computación Activa</span>
+                        <h3>3. Entrenamiento del Modelo (AI Training)</h3>
+                        <span class="badge badge-warning">GPU Ready</span>
                     </div>
                     
                     <div class="panel-body">
-                        
                         <div class="split-layout">
                             <!-- Column 1: Configuración -->
                             <div class="config-col">
-                                <h4 class="sub-heading">Configuración del Algoritmo</h4>
+                                <h4 class="sub-heading">Arquitectura del Algoritmo</h4>
                                 
                                 <div class="algo-selector">
                                     <div class="algo-option active" data-algo="kmeans">
                                         <div class="radio-circle"></div>
                                         <div>
-                                            <strong>K-Means</strong>
-                                            <p>Optimización basada en centroides</p>
+                                            <strong>K-Means Clustering</strong>
+                                            <p>Optimización basada en centroides matemáticos.</p>
                                         </div>
                                     </div>
                                     <div class="algo-option" data-algo="agglomerative">
                                         <div class="radio-circle"></div>
                                         <div>
                                             <strong>Hierarchical (Agglomerative)</strong>
-                                            <p>Clustering jerárquico bottom-up</p>
+                                            <p>Agrupamiento bottom-up con enlace estadístico.</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="params-box">
+                                <div class="params-box glass-inner">
                                     <div class="form-group">
                                         <label>Hiperparámetro: n_clusters (K)</label>
                                         <input type="number" id="n-clusters" value="3" min="2" max="10" class="form-control">
@@ -175,33 +184,37 @@
                             <!-- Column 2: Features & Action -->
                             <div class="features-col">
                                 <h4 class="sub-heading">Vectores de Características (Features)</h4>
-                                <div class="checkbox-grid" id="features-checkboxes">
+                                <div class="checkbox-grid glass-inner" id="features-checkboxes">
                                     <!-- Populated via JS -->
                                 </div>
 
                                 <div class="train-action-box">
-                                    <button id="train-btn" class="btn btn-primary btn-block">Iniciar Proceso de Entrenamiento (Fit & Predict)</button>
-                                    <div class="terminal-log mt-3">
-                                        <span class="prompt">></span> <span id="train-status" class="log-msg">Esperando configuración...</span>
-                                    </div>
+                                    <button id="train-btn" class="btn btn-primary btn-glow btn-block btn-lg">
+                                        <span class="btn-text">Iniciar Entrenamiento de IA</span>
+                                        <div class="spinner hidden" id="train-spinner"></div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </section>
 
-                <!-- Section 4: Resultados -->
+                <!-- Section 4: Resultados y Gráficas -->
                 <section id="results" class="dashboard-panel" style="display:none;">
                     <div class="panel-header">
-                        <h3>4. Resultados (Inferencia)</h3>
+                        <h3>4. AI Insights & Visualizations</h3>
                         <div class="panel-actions">
-                            <button id="download-results-btn" class="btn btn-sm btn-success">Exportar Modelo & Predicciones</button>
+                            <button id="download-results-btn" class="btn btn-sm btn-success btn-glow">Exportar Modelo</button>
                         </div>
                     </div>
                     
                     <div class="panel-body">
-                        <div class="data-table-wrapper">
+                        <!-- Chart.js Container -->
+                        <div class="chart-container glass-inner" style="position: relative; height:40vh; width:100%; margin-bottom: 24px;">
+                            <canvas id="clusterChart"></canvas>
+                        </div>
+
+                        <div class="data-table-wrapper glass-inner">
                             <table class="data-table" id="results-table">
                                 <thead id="results-table-head"></thead>
                                 <tbody id="results-table-body"></tbody>
@@ -216,7 +229,6 @@
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
     <script>
-        // Simple sidebar navigation highlights
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', () => {

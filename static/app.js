@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadBtn = document.getElementById('upload-btn');
     const demoBtn = document.getElementById('demo-btn');
     const fileInput = document.getElementById('file-input');
-    const uploadStatus = document.getElementById('upload-status');
+    const toastContainer = document.getElementById('toast-container');
     
     const filterSection = document.getElementById('explore');
     const trainSection = document.getElementById('train');
@@ -17,19 +17,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const linkageGroup = document.getElementById('linkage-group');
     const featuresCheckboxes = document.getElementById('features-checkboxes');
     const trainBtn = document.getElementById('train-btn');
-    const trainStatus = document.getElementById('train-status');
+    const trainSpinner = document.getElementById('train-spinner');
     
     let currentAlgorithm = 'kmeans';
     let availableColumns = [];
+    let chartInstance = null; // To keep track of Chart.js
     
-    function logMsg(el, msg, type = 'info') {
-        el.textContent = msg;
-        el.className = `log-msg ${type}`;
+    // Modern Toast Notification System
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = 'ℹ️';
+        if (type === 'success') icon = '✅';
+        if (type === 'error') icon = '❌';
+        
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        toastContainer.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideIn 0.3s reverse forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
     }
 
     uploadBtn.addEventListener('click', async () => {
         if (!fileInput.files[0]) {
-            logMsg(uploadStatus, 'ERR: No file selected.', 'error');
+            showToast('No file selected.', 'error');
             return;
         }
         
@@ -37,33 +51,34 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('file', fileInput.files[0]);
         
         try {
-            logMsg(uploadStatus, 'Uploading file...', 'info');
+            showToast('Ingesting data...', 'info');
             const res = await fetch('/upload', { method: 'POST', body: formData });
             const data = await res.json();
             
             if (res.ok) {
-                logMsg(uploadStatus, `SUCCESS: Ingested ${data.rows} records.`, 'success');
+                showToast(`Successfully ingested ${data.rows} records.`, 'success');
                 availableColumns = data.columns;
                 onDataLoaded();
             } else {
-                logMsg(uploadStatus, `ERR: ${data.error}`, 'error');
+                showToast(`Error: ${data.error}`, 'error');
             }
         } catch (e) {
-            logMsg(uploadStatus, 'ERR: Connection failed.', 'error');
+            showToast('Connection failed to backend.', 'error');
         }
     });
 
-    demoBtn.addEventListener('click', async () => {
-        logMsg(uploadStatus, 'Select data/perfil_zodiacal_ejemplo.csv and upload.', 'info');
+    demoBtn.addEventListener('click', () => {
+        showToast('Please select "data/perfil_zodiacal_ejemplo.csv" from your folders to test.', 'info');
     });
 
     function onDataLoaded() {
         filterSection.style.display = 'block';
         trainSection.style.display = 'block';
+        resultsSection.style.display = 'none'; // hide previous results
         
         categoryColSelect.innerHTML = '<option value="">-- Ninguno --</option>';
         availableColumns.forEach(col => {
-            if (!['Edad', 'Energía'].includes(col)) { // Basic heuristic
+            if (!['Edad', 'Energía'].includes(col)) {
                 categoryColSelect.innerHTML += `<option value="${col}">${col}</option>`;
             }
         });
@@ -104,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilterBtn.addEventListener('click', () => {
         loadTableData();
         loadStats();
+        showToast('Filtros aplicados', 'success');
     });
     
     async function loadTableData() {
@@ -145,12 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('stats-container');
             container.innerHTML = '';
             for (const [feat, stats] of Object.entries(data.stats)) {
+                // Ensure the stat is not NaN stringified
+                const mean = stats.mean !== undefined && stats.mean !== null ? stats.mean.toFixed(2) : '-';
                 container.innerHTML += `
                     <div class="stat-card">
                         <h4>${feat}</h4>
-                        <div class="stat-metric">Mean <span>${stats.mean}</span></div>
-                        <div class="stat-metric">Min <span>${stats.min}</span></div>
-                        <div class="stat-metric">Max <span>${stats.max}</span></div>
+                        <div class="stat-metric">Mean <span>${mean}</span></div>
+                        <div class="stat-metric">Min <span>${stats.min ?? '-'}</span></div>
+                        <div class="stat-metric">Max <span>${stats.max ?? '-'}</span></div>
                     </div>
                 `;
             }
@@ -172,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAlgorithm = card.dataset.algo;
             
             if (currentAlgorithm === 'agglomerative') {
-                linkageGroup.style.display = 'block';
+                linkageGroup.style.display = 'flex';
             } else {
                 linkageGroup.style.display = 'none';
             }
@@ -184,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const features = Array.from(checkboxes).map(cb => cb.value);
         
         if (features.length === 0) {
-            logMsg(trainStatus, 'ERR: Select >= 1 feature.', 'error');
+            showToast('Select at least 1 feature.', 'error');
             return;
         }
         
@@ -206,7 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            logMsg(trainStatus, 'Running model.fit_predict()...', 'info');
+            // UI Loading state
+            trainBtn.querySelector('.btn-text').textContent = 'Procesando tensores...';
+            trainSpinner.classList.remove('hidden');
             trainBtn.disabled = true;
             
             const res = await fetch('/train', {
@@ -217,15 +237,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             
             if (res.ok) {
-                logMsg(trainStatus, 'SUCCESS: Model trained. Inference complete.', 'success');
+                showToast('Model converged successfully! Visualizing results...', 'success');
                 resultsSection.style.display = 'block';
                 renderTable('results-table', 'results-table-head', 'results-table-body', data.results);
+                
+                // Draw Chart
+                renderScatterPlot(data.results, features);
+                
+                // Scroll down
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
             } else {
-                logMsg(trainStatus, `ERR: ${data.error}`, 'error');
+                showToast(`Error de Entrenamiento: ${data.error}`, 'error');
             }
         } catch (e) {
-            logMsg(trainStatus, 'ERR: Connection failed.', 'error');
+            showToast('Connection failed during training.', 'error');
         } finally {
+            // Reset UI
+            trainBtn.querySelector('.btn-text').textContent = 'Iniciar Entrenamiento de IA';
+            trainSpinner.classList.add('hidden');
             trainBtn.disabled = false;
         }
     });
@@ -244,7 +273,94 @@ document.addEventListener('DOMContentLoaded', () => {
         thead.innerHTML = cols.map(c => `<th>${c}</th>`).join('');
         
         tbody.innerHTML = data.map(row => {
-            return `<tr>${cols.map(c => `<td>${row[c]}</td>`).join('')}</tr>`;
+            return `<tr>${cols.map(c => `<td>${row[c] !== null ? row[c] : '-'}</td>`).join('')}</tr>`;
         }).join('');
+    }
+    
+    function renderScatterPlot(data, features) {
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+        
+        const ctx = document.getElementById('clusterChart').getContext('2d');
+        
+        // We need at least 1 feature. If 1, we plot y=0. If >=2, we plot feat1 vs feat2.
+        let f_x = features[0];
+        let f_y = features.length > 1 ? features[1] : features[0];
+        
+        // Group data by Cluster
+        const clusters = [...new Set(data.map(d => d.Cluster))].sort();
+        
+        // Generar colores neón para los clústeres
+        const colors = [
+            'rgba(99, 102, 241, 1)',   // Indigo
+            'rgba(6, 182, 212, 1)',    // Cyan
+            'rgba(168, 85, 247, 1)',   // Purple
+            'rgba(245, 158, 11, 1)',   // Warning (Orange/Yellow)
+            'rgba(16, 185, 129, 1)',   // Success (Green)
+            'rgba(239, 68, 68, 1)',    // Danger (Red)
+            'rgba(236, 72, 153, 1)'    // Pink
+        ];
+        
+        const datasets = clusters.map((clusterId, index) => {
+            const clusterData = data.filter(d => d.Cluster === clusterId).map(d => {
+                return { x: d[f_x] || 0, y: features.length > 1 ? (d[f_y] || 0) : 0 };
+            });
+            
+            const color = colors[index % colors.length];
+            
+            return {
+                label: `Cluster ${clusterId}`,
+                data: clusterData,
+                backgroundColor: color,
+                borderColor: color,
+                pointRadius: 6,
+                pointHoverRadius: 9,
+            };
+        });
+
+        // Configurar tema oscuro de Chart.js
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        chartInstance = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: features.length > 1 ? `Dispersión 2D: ${f_x} vs ${f_y}` : `Dispersión 1D: ${f_x}`,
+                        color: 'white',
+                        font: { size: 16, weight: '600' }
+                    },
+                    legend: {
+                        position: 'top',
+                        labels: { color: 'white', usePointStyle: true, boxWidth: 10 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(255,255,255,0.2)',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: f_x, color: '#6366f1' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    y: {
+                        title: { display: true, text: features.length > 1 ? f_y : 'N/A', color: '#a855f7' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    }
+                }
+            }
+        });
     }
 });
