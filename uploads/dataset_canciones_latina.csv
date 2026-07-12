@@ -1,0 +1,481 @@
+Cancion,Artista,Genero,Bailabilidad,Nostalgia,IntensidadEmocional,TiempoPercibido,Target
+Bidi Bidi Bom Bom,Selena,Cumbia/Tejano,9.0,2.0,8.0,9.0,1
+El Noa Noa,Juan Gabriel,Cumbia Pop,7.0,3.0,6.0,8.0,1
+Estos Celos,Vicente Fernández,Ranchera,9.0,1.0,9.0,8.0,1
+Pelo Suelto,Gloria Trevi,Pop Rock,8.0,4.0,7.0,8.0,1
+Techno Cumbia,Selena,Tecnocumbia,9.0,2.0,8.0,10.0,1
+El Triste,José José,Balada,2.0,9.0,8.0,2.0,0
+Amor Eterno,Rocío Dúrcal,Balada Ranchera,1.0,8.0,9.0,2.0,0
+La Nave del Olvido,José José,Bolero,3.0,9.0,7.0,3.0,0
+Como Yo Te Amé,Rocío Dúrcal,Balada,2.0,7.0,6.0,3.0,0
+Hasta Que Te Conocí,Juan Gabriel,Balada,3.0,8.0,7.0,3.0,0
+Como La Flor,Selena,Cumbia,8.0,4.0,7.0,9.0,1
+Caray,Juan Gabriel,Pop Ranchero,9.0,3.0,8.0,9.0,1
+La Bikina,Luis Miguel,Mariachi Pop,7.0,5.0,6.0,7.0,1
+El Rey,Vicente Fernández,Ranchera,10.0,1.0,9.0,9.0,1
+Qué Manera de Perder,Luis Miguel,Pop,6.0,2.0,5.0,7.0,1
+La Gata Bajo La Lluvia,Rocío Dúrcal,Balada,4.0,8.0,6.0,4.0,0
+Si Una Vez,Selena,Balada Pop,6.0,7.0,5.0,6.0,0
+Payaso,José José,Balada,2.0,9.0,8.0,2.0,0
+Si No Te Hubieras Ido,Marco Antonio Solís,Balada,3.0,8.0,7.0,3.0,0
+Más Que Tu Amigo,Marco Antonio Solís,Balada Pop,5.0,7.0,6.0,5.0,0
+Piel Morena,Thalía,Pop Latino,8.0,3.0,7.0,8.0,1
+Doctor Psiquiatra,Gloria Trevi,Pop Rock,8.0,2.0,8.0,9.0,1
+Costumbres,Rocío Dúrcal,Ranchera Pop,7.0,4.0,6.0,7.0,1
+Volver Volver,Vicente Fernández,Ranchera,9.0,2.0,9.0,8.0,1
+Gavilán o Paloma,José José,Pop Ranchero,8.0,4.0,7.0,7.0,1
+Inolvidable,Luis Miguel,Bolero,5.0,6.0,5.0,4.0,0
+Usted,José José,Bolero,1.0,9.0,8.0,2.0,0
+La Diferencia,José José,Balada,3.0,7.0,6.0,3.0,0
+Eres Tú,Mocedades,Balada,4.0,8.0,5.0,4.0,0
+Simplemente Amigos,Ana Gabriel,Balada Ranchera,4.0,6.0,5.0,5.0,0
+Amor Prohibido,Selena,Cumbia Pop,6.0,1.0,7.0,8.0,1
+La Carcacha,Selena,Cumbia Pop,7.0,2.0,5.0,7.0,1
+Baila Esta Cumbia,Selena,Cumbia/Tejano,10.0,4.0,5.0,7.0,1
+El Chico del Apartamento 512,Selena,Cumbia Pop,6.0,2.0,6.0,7.0,1
+Cumbia Sampuesana,Los Ángeles Azules,Cumbia,10.0,2.0,9.0,10.0,1
+Como Te Voy a Olvidar,Los Ángeles Azules,Cumbia,7.0,4.0,9.0,9.0,1
+El Listón de Tu Pelo,Los Ángeles Azules,Cumbia,6.0,2.0,8.0,9.0,1
+Juana la Cubana,Fito Olivares,Cumbia,8.0,2.0,6.0,9.0,1
+Cumbia Sobre el Río,Celso Piña,Cumbia,6.0,1.0,8.0,7.0,1
+El Africano,Wilfrido Vargas,Merengue/Cumbia,8.0,3.0,9.0,9.0,1
+La Pollera Colorá,Lucho Bermúdez,Cumbia,6.0,4.0,9.0,7.0,1
+La Cumbia Cienaguera,Aníbal Velásquez,Cumbia,9.0,1.0,9.0,9.0,1
+Mi Cucu,Aniceto Molina,Cumbia,10.0,3.0,9.0,8.0,1
+La Piragua,Gabriel Romero,Cumbia,6.0,1.0,6.0,9.0,1
+Cumbia del Río,Andrés Landero,Cumbia,6.0,2.0,5.0,10.0,1
+Vivir Mi Vida,Marc Anthony,Salsa,8.0,4.0,7.0,8.0,1
+Valió la Pena,Marc Anthony,Salsa,8.0,3.0,6.0,9.0,1
+Cali Pachanguero,Grupo Niche,Salsa,6.0,2.0,9.0,8.0,1
+Mujeres Como Tú,Grupo Niche,Salsa,7.0,4.0,8.0,9.0,1
+Que Alguien Me Diga,Gilberto Santa Rosa,Salsa,10.0,2.0,7.0,7.0,1
+Conteo,Gilberto Santa Rosa,Salsa,7.0,1.0,7.0,10.0,1
+La Vida Es Un Carnaval,Celia Cruz,Salsa,8.0,1.0,6.0,9.0,1
+Quimbara,Celia Cruz,Salsa,7.0,4.0,8.0,10.0,1
+Oye Como Va,Tito Puente,Salsa,7.0,3.0,6.0,8.0,1
+La Bilirrubina,Juan Luis Guerra,Merengue,10.0,3.0,9.0,10.0,1
+El Niágara en Bicicleta,Juan Luis Guerra,Merengue,10.0,4.0,7.0,8.0,1
+El Cantante,Héctor Lavoe,Salsa,7.0,4.0,5.0,7.0,1
+Pedro Navaja,Rubén Blades,Salsa,6.0,2.0,6.0,10.0,1
+La Cura,Frankie Ruiz,Salsa,10.0,1.0,8.0,10.0,1
+Periódico de Ayer,Héctor Lavoe,Salsa,10.0,4.0,9.0,9.0,1
+Idilio,Willie Colón,Salsa,10.0,1.0,5.0,9.0,1
+Usted Abusó,Willie Colón,Salsa,8.0,1.0,7.0,10.0,1
+Obsesión,Aventura,Bachata,7.0,4.0,5.0,9.0,1
+Propuesta Indecente,Romeo Santos,Bachata,10.0,2.0,9.0,7.0,1
+Eres Mía,Romeo Santos,Bachata,8.0,2.0,6.0,9.0,1
+Devuélveme el Amor,Aventura,Bachata,2.0,6.0,9.0,4.0,0
+Bachata Rosa,Juan Luis Guerra,Bachata,4.0,6.0,5.0,4.0,0
+Penélope,Joe Veras,Bachata,3.0,7.0,5.0,3.0,0
+Loco,Aventura,Bachata,10.0,1.0,5.0,10.0,1
+Gasolina,Daddy Yankee,Reggaetón,6.0,2.0,6.0,10.0,1
+Llamado de Emergencia,Daddy Yankee,Reggaetón,10.0,2.0,7.0,10.0,1
+Adictiva,Daddy Yankee,Reggaetón,7.0,2.0,7.0,10.0,1
+Con Calma,Daddy Yankee,Reggaetón,8.0,4.0,9.0,10.0,1
+Rakata,Wisin & Yandel,Reggaetón,6.0,2.0,6.0,7.0,1
+Danza Kuduro,Don Omar,Reggaetón,8.0,1.0,9.0,8.0,1
+Travesuras,Nicky Jam,Reggaetón,10.0,2.0,5.0,7.0,1
+Taki Taki,Ozuna,Reggaetón,6.0,2.0,5.0,7.0,1
+La Modelo,Ozuna,Reggaetón,8.0,1.0,9.0,8.0,1
+Mi Gente,J Balvin,Reggaetón,8.0,4.0,6.0,8.0,1
+Ginza,J Balvin,Reggaetón,10.0,4.0,6.0,10.0,1
+Tusa,Karol G,Reggaetón,9.0,2.0,5.0,7.0,1
+Bichota,Karol G,Reggaetón,9.0,3.0,8.0,10.0,1
+Tití Me Preguntó,Bad Bunny,Reggaetón,9.0,1.0,5.0,7.0,1
+Callaita,Bad Bunny,Reggaetón,9.0,3.0,5.0,8.0,1
+Despacito,Luis Fonsi,Pop Urbano,7.0,2.0,9.0,10.0,1
+Bailando,Enrique Iglesias,Pop Urbano,7.0,4.0,6.0,9.0,1
+Mayores,Becky G,Reggaetón,9.0,2.0,5.0,10.0,1
+Felices los 4,Maluma,Reggaetón,10.0,1.0,5.0,7.0,1
+Chantaje,Shakira,Pop Urbano,6.0,2.0,6.0,10.0,1
+Hawái,Maluma,Reggaetón,9.0,4.0,6.0,10.0,1
+Conga,Gloria Estefan,Pop Latino,6.0,2.0,8.0,7.0,1
+Mi Tierra,Gloria Estefan,Pop Latino,9.0,3.0,8.0,9.0,1
+Hey!,Julio Iglesias,Pop Latino,9.0,4.0,6.0,8.0,1
+Amor a la Mexicana,Thalía,Pop Ranchero,8.0,2.0,5.0,7.0,1
+Ni Una Sola Palabra,Paulina Rubio,Pop Latino,8.0,1.0,5.0,10.0,1
+Rebelde,RBD,Pop Rock,10.0,2.0,5.0,7.0,1
+Sálvame,RBD,Pop Rock,7.0,1.0,9.0,7.0,1
+Bella Traición,Belinda,Pop Latino,7.0,4.0,5.0,8.0,1
+Boba Niña Nice,Belinda,Pop Rock,10.0,1.0,9.0,7.0,1
+La Tortura,Shakira,Pop Latino,9.0,3.0,7.0,8.0,1
+Estoy Aquí,Shakira,Pop Latino,8.0,2.0,7.0,10.0,1
+Suerte,Shakira,Pop Latino,7.0,3.0,8.0,9.0,1
+La Camisa Negra,Juanes,Pop Rock,6.0,1.0,8.0,7.0,1
+A Dios le Pido,Juanes,Pop Rock,6.0,2.0,9.0,9.0,1
+Es Por Ti,Juanes,Pop Rock,7.0,3.0,5.0,8.0,1
+La Gota Fría,Carlos Vives,Vallenato Pop,8.0,3.0,6.0,10.0,1
+Fruta Fresca,Carlos Vives,Vallenato Pop,10.0,3.0,9.0,7.0,1
+Pa' Mayte,Carlos Vives,Vallenato Pop,10.0,3.0,5.0,8.0,1
+De Música Ligera,Soda Stereo,Rock,8.0,1.0,5.0,8.0,1
+Persiana Americana,Soda Stereo,Rock,8.0,3.0,9.0,8.0,1
+Nada Personal,Soda Stereo,Rock,3.0,7.0,7.0,5.0,0
+Eres,Café Tacvba,Rock,8.0,1.0,5.0,10.0,1
+La Ingrata,Café Tacvba,Rock,8.0,1.0,5.0,9.0,1
+Devuélveme a Mi Chica,Hombres G,Rock,7.0,3.0,6.0,10.0,1
+Clavado en un Bar,Maná,Rock,10.0,4.0,9.0,7.0,1
+Oye Mi Amor,Maná,Rock,6.0,1.0,6.0,7.0,1
+Mariposa Traicionera,Maná,Rock,8.0,2.0,8.0,8.0,1
+Rayando el Sol,Maná,Rock Balada,1.0,8.0,7.0,2.0,0
+Lamento Boliviano,Enanitos Verdes,Rock,8.0,2.0,6.0,7.0,1
+No Hay Tu Tía,Aleks Syntek,Pop Rock,8.0,4.0,9.0,8.0,1
+La Célula Que Explota,Caifanes,Rock,2.0,7.0,6.0,5.0,0
+Entre Dos Tierras,Héroes del Silencio,Rock,1.0,7.0,7.0,5.0,0
+Amorcito Corazón,Pedro Infante,Ranchera,7.0,3.0,6.0,7.0,1
+El Andariego,Antonio Aguilar,Ranchera,9.0,1.0,8.0,8.0,1
+Por Tu Maldito Amor,Vicente Fernández,Ranchera,7.0,4.0,7.0,9.0,1
+Mujeres Divinas,Vicente Fernández,Ranchera,7.0,2.0,5.0,8.0,1
+Allá en el Rancho Grande,Tito Guízar,Ranchera,9.0,3.0,7.0,7.0,1
+Cielito Lindo,Trío Calaveras,Ranchera,8.0,3.0,9.0,10.0,1
+El Sinaloense,Banda El Recodo,Banda,10.0,3.0,5.0,7.0,1
+Háblame de Ti,Banda MS,Banda,8.0,2.0,9.0,9.0,1
+El Tóxico,Grupo Firme,Banda,6.0,1.0,9.0,10.0,1
+Ya Superame,Grupo Firme,Banda,8.0,3.0,8.0,7.0,1
+Tatuajes,Joan Sebastian,Ranchera Pop,9.0,2.0,7.0,7.0,1
+Por Mujeres Como Tú,Pepe Aguilar,Ranchera,9.0,1.0,9.0,8.0,1
+Que Se Mueran de Envidia,Pepe Aguilar,Ranchera,8.0,4.0,5.0,9.0,1
+El Rey de Corazones,Christian Nodal,Ranchera Pop,10.0,3.0,5.0,9.0,1
+Botella Tras Botella,Christian Nodal,Ranchera Pop,10.0,3.0,8.0,9.0,1
+Ella Baila Sola,Eslabón Armado,Sierreño,9.0,3.0,9.0,8.0,1
+La Bebe,Yng Lvcas,Sierreño Pop,7.0,4.0,8.0,8.0,1
+Cien Años,Pedro Infante,Bolero,3.0,9.0,9.0,2.0,0
+Sombras,Javier Solís,Bolero,3.0,8.0,6.0,5.0,0
+Ella,José Alfredo Jiménez,Ranchera Balada,3.0,9.0,8.0,5.0,0
+Que Te Vaya Bonito,José Alfredo Jiménez,Ranchera Balada,2.0,9.0,6.0,2.0,0
+Acá Entre Nos,Vicente Fernández,Ranchera Balada,3.0,8.0,5.0,3.0,0
+Bésame Mucho,Los Panchos,Bolero,3.0,7.0,6.0,3.0,0
+Sin Ti,Los Panchos,Bolero,1.0,6.0,6.0,5.0,0
+Contigo Aprendí,Lucho Gatica,Bolero,1.0,9.0,8.0,3.0,0
+Tú Me Acostumbraste,Olga Guillot,Bolero,4.0,9.0,8.0,3.0,0
+Perdóname,Camilo Sesto,Balada,2.0,6.0,5.0,5.0,0
+Vivir Así Es Morir de Amor,Camilo Sesto,Balada,2.0,7.0,9.0,5.0,0
+Como Yo Te Amo,Rocío Jurado,Balada,1.0,7.0,5.0,5.0,0
+Ese Hombre,Rocío Jurado,Balada,2.0,9.0,9.0,4.0,0
+Sólo Para Vivir,Lupita D'Alessio,Balada Ranchera,4.0,9.0,9.0,5.0,0
+Maldita Primavera,Yuri,Balada Pop,2.0,9.0,8.0,4.0,0
+Qué Te Pasa,Yuri,Balada Pop,2.0,8.0,9.0,5.0,0
+Tiempo de Vals,Chayanne,Balada Pop,2.0,8.0,8.0,2.0,0
+Volver a Amar,Cristian Castro,Balada Pop,3.0,7.0,7.0,4.0,0
+Azul,Cristian Castro,Balada Pop,3.0,6.0,6.0,3.0,0
+No Me Doy Por Vencido,Luis Fonsi,Balada Pop,2.0,9.0,6.0,3.0,0
+Hijo de la Luna,Mecano,Balada,1.0,9.0,8.0,4.0,0
+La Fuerza del Destino,Mecano,Balada,4.0,9.0,5.0,3.0,0
+No Llores,Gloria Estefan,Balada,4.0,9.0,9.0,2.0,0
+De Niña a Mujer,Julio Iglesias,Balada,4.0,9.0,5.0,4.0,0
+Abrázame,Julio Iglesias,Balada,3.0,9.0,8.0,3.0,0
+Como Quien Pierde Una Estrella,Alejandro Fernández,Balada Ranchera,4.0,7.0,7.0,5.0,0
+Si Tú Supieras,Alejandro Fernández,Balada Pop,4.0,6.0,8.0,4.0,0
+Te Voy a Perder,Alejandro Fernández,Balada Pop,4.0,7.0,8.0,3.0,0
+Adiós Amor,Christian Nodal,Balada Ranchera,1.0,9.0,9.0,2.0,0
+De Los Besos Que Te Di,Christian Nodal,Balada Ranchera,1.0,9.0,6.0,5.0,0
+La Puerta Negra,Los Tigres del Norte,Corrido,2.0,6.0,7.0,5.0,0
+Contrabando y Traición,Los Tigres del Norte,Corrido,3.0,7.0,8.0,4.0,0
+Secreto de Amor,Joan Sebastian,Balada Ranchera,3.0,9.0,7.0,5.0,0
+Miedo,Pepe Aguilar,Balada Ranchera,3.0,6.0,8.0,2.0,0
+Acompáñame a Llorar,Joan Sebastian,Balada Ranchera,1.0,8.0,6.0,2.0,0
+Amor Eterno (versión Juan Gabriel),Juan Gabriel,Balada Ranchera,1.0,6.0,6.0,3.0,0
+Querida,Juan Gabriel,Balada,1.0,7.0,6.0,3.0,0
+Así Fue,Juan Gabriel,Balada,4.0,6.0,9.0,3.0,0
+No Tengo Dinero,Juan Gabriel,Balada,4.0,8.0,7.0,3.0,0
+Te Sigo Esperando,Cristian Castro,Balada Pop,1.0,7.0,7.0,2.0,0
+Pero Te Vas a Arrepentir,Yuri,Balada Pop,1.0,8.0,9.0,5.0,0
+Amor Eterno y Pasajero,Lupita D'Alessio,Balada,4.0,7.0,5.0,3.0,0
+Si Nos Dejan,Lupita D'Alessio,Balada Ranchera,1.0,8.0,9.0,2.0,0
+Tú Cárcel,Marisela,Balada,1.0,8.0,9.0,5.0,0
+El Color de Tus Ojos,Marisela,Balada,3.0,6.0,9.0,4.0,0
+Soldado del Amor,Yuri,Balada Pop,1.0,9.0,8.0,2.0,0
+Si Me Tenías,Yuri,Balada Pop,4.0,8.0,8.0,3.0,0
+Yo Que No Vivo Sin Ti,Mijares,Balada Pop,4.0,7.0,9.0,4.0,0
+No Se Murió el Amor,Mijares,Balada Pop,4.0,9.0,8.0,4.0,0
+Para Amarnos Más,Mijares,Balada Pop,3.0,7.0,5.0,4.0,0
+Bella Época,Daniela Romo,Balada Pop,4.0,7.0,8.0,5.0,0
+De Mí Enamórate,Daniela Romo,Balada Pop,3.0,6.0,8.0,4.0,0
+Yo No Te Pido la Luna,Daniela Romo,Balada Pop,2.0,9.0,6.0,4.0,0
+Cuando Calienta el Sol,Luis Miguel,Balada,3.0,8.0,7.0,4.0,0
+La Incondicional,Luis Miguel,Balada Pop,1.0,7.0,5.0,3.0,0
+Te Necesito,Luis Miguel,Balada,4.0,9.0,9.0,3.0,0
+Suave,Luis Miguel,Balada,4.0,9.0,8.0,2.0,0
+Amarte Es un Placer,Luis Miguel,Balada Pop,1.0,8.0,6.0,5.0,0
+Hasta Que Vuelvas,José José,Balada,2.0,8.0,9.0,4.0,0
+"Lo Pasado, Pasado",José José,Balada,4.0,8.0,8.0,4.0,0
+Te Solté la Rienda,Vicente Fernández,Ranchera,8.0,4.0,7.0,9.0,1
+La Gasolina,Daddy Yankee,Reggaetón,10.0,3.0,6.0,10.0,1
+Lo Que Pasó Pasó,Daddy Yankee,Reggaetón,9.0,4.0,7.0,9.0,1
+Rompe,Daddy Yankee,Reggaetón,9.0,3.0,5.0,9.0,1
+Impacto,Daddy Yankee,Reggaetón,9.0,2.0,5.0,9.0,1
+Mayor Que Yo,Wisin & Yandel,Reggaetón,9.0,4.0,7.0,9.0,1
+Pam Pam,Wisin & Yandel,Reggaetón,9.0,3.0,6.0,9.0,1
+Noche de Entierro,Daddy Yankee / Wisin & Yandel,Reggaetón,9.0,4.0,7.0,9.0,1
+Abusadora,Wisin & Yandel,Reggaetón,10.0,2.0,6.0,10.0,1
+Sexy Movimiento,Wisin & Yandel,Reggaetón,10.0,2.0,6.0,9.0,1
+Pegao,Wisin & Yandel,Reggaetón,9.0,3.0,5.0,9.0,1
+Virtual Diva,Don Omar,Reggaetón,9.0,3.0,6.0,9.0,1
+Dale Don Dale,Don Omar,Reggaetón,9.0,5.0,6.0,9.0,1
+Pobre Diabla,Don Omar,Reggaetón,8.0,6.0,8.0,8.0,1
+Salió El Sol,Don Omar,Reggaetón,9.0,4.0,6.0,9.0,1
+Dile,Don Omar,Reggaetón,9.0,5.0,7.0,9.0,1
+Ella Me Levantó,Daddy Yankee,Reggaetón/Salsa,10.0,3.0,7.0,10.0,1
+Felina,Héctor & Tito,Reggaetón,8.0,6.0,6.0,8.0,1
+Baila Morena,Héctor & Tito,Reggaetón,9.0,5.0,5.0,9.0,1
+Gata Fiera,Trebol Clan,Reggaetón,9.0,5.0,5.0,9.0,1
+Pa' Que Retumbe,Tego Calderón,Reggaetón,9.0,4.0,6.0,9.0,1
+Mentirosa,Ráfaga,Cumbia,9.0,4.0,6.0,9.0,1
+Una Cerveza,Ráfaga,Cumbia,9.0,3.0,8.0,9.0,1
+La Ventanita,Sergio Vargas,Merengue,9.0,5.0,6.0,9.0,1
+La Duena del Swing,Los Hermanos Rosario,Merengue,10.0,4.0,6.0,10.0,1
+El Venao,Los Cantantes,Merengue,9.0,5.0,5.0,9.0,1
+Suavemente,Elvis Crespo,Merengue,10.0,4.0,7.0,10.0,1
+Píntame,Elvis Crespo,Merengue,9.0,4.0,6.0,9.0,1
+Tu Sonrisa,Elvis Crespo,Merengue,9.0,4.0,6.0,9.0,1
+Procura,Chichi Peralta,Fusión Tropical,9.0,5.0,7.0,9.0,1
+Amor Narcótico,Chichi Peralta,Fusión Tropical,9.0,5.0,8.0,9.0,1
+El Tiburón,Proyecto Uno,Merengue House,10.0,5.0,6.0,10.0,1
+25 Horas,Proyecto Uno,Merengue House,9.0,4.0,6.0,9.0,1
+La Morena,Ilegales,Merengue House,9.0,5.0,6.0,9.0,1
+Taqui Taqui,Ilegales,Merengue House,9.0,4.0,5.0,9.0,1
+El Baile del Perrito,Wilfrido Vargas,Merengue,10.0,5.0,5.0,10.0,1
+Abusadora,Wilfrido Vargas,Merengue,9.0,5.0,6.0,9.0,1
+Kilitaka,Toño Rosario,Merengue,10.0,4.0,5.0,10.0,1
+A pedir su mano,Juan Luis Guerra,Merengue,9.0,4.0,8.0,9.0,1
+Las Avispas,Juan Luis Guerra,Merengue,9.0,3.0,7.0,9.0,1
+La Llave de Mi Corazón,Juan Luis Guerra,Merengue,9.0,3.0,7.0,9.0,1
+Burbujas de Amor,Juan Luis Guerra,Bachata,5.0,7.0,8.0,5.0,0
+Ojalá Que Llueva Café,Juan Luis Guerra,Merengue,8.0,6.0,9.0,8.0,1
+Frío Frío,Juan Luis Guerra,Pop Latino,5.0,7.0,8.0,5.0,0
+Tu Amor Me Hace Bien,Marc Anthony,Salsa,9.0,3.0,9.0,9.0,1
+Te Conozco Bien,Marc Anthony,Salsa,8.0,5.0,9.0,8.0,1
+Y Hubo Alguien,Marc Anthony,Salsa,8.0,5.0,9.0,8.0,1
+Ahora Quien,Marc Anthony,Salsa,7.0,5.0,9.0,8.0,1
+Flor Pálida,Marc Anthony,Salsa,8.0,4.0,8.0,8.0,1
+La Rebelión,Joe Arroyo,Salsa,10.0,4.0,9.0,10.0,1
+En Barranquilla Me Quedo,Joe Arroyo,Salsa,9.0,4.0,8.0,9.0,1
+Llorarás,Oscar D'León,Salsa,9.0,5.0,8.0,9.0,1
+Detalles,Oscar D'León,Salsa,8.0,5.0,7.0,8.0,1
+Sin Sentimiento,Grupo Niche,Salsa,8.0,5.0,8.0,8.0,1
+Una Aventura,Grupo Niche,Salsa,8.0,5.0,8.0,8.0,1
+Gotas de Lluvia,Grupo Niche,Salsa,7.0,6.0,8.0,7.0,1
+La Cita,Galy Galiano,Salsa,8.0,6.0,8.0,8.0,1
+Conciencia,Gilberto Santa Rosa,Salsa,8.0,5.0,8.0,8.0,1
+Perdoname,Gilberto Santa Rosa,Salsa,8.0,5.0,8.0,8.0,1
+Vivir Lo Nuestro,Marc Anthony & La India,Salsa,8.0,5.0,9.0,8.0,1
+Dile a Ella,Victor Manuelle,Salsa,9.0,4.0,7.0,9.0,1
+Tengo Ganas,Victor Manuelle,Salsa,8.0,4.0,8.0,8.0,1
+He Tratado,Victor Manuelle,Salsa,8.0,5.0,8.0,8.0,1
+Desnúdate Mujer,Frankie Ruiz,Salsa,8.0,5.0,8.0,8.0,1
+Tú Me Vuelves Loco,Frankie Ruiz,Salsa,9.0,5.0,8.0,9.0,1
+Quiero Morir En Tu Piel,Frankie Ruiz,Salsa,8.0,5.0,8.0,8.0,1
+Mi Libertad,Frankie Ruiz,Salsa,8.0,5.0,9.0,8.0,1
+Lluvia,Eddie Santiago,Salsa,8.0,6.0,8.0,8.0,1
+Qué Locura Enamorarme De Ti,Eddie Santiago,Salsa,8.0,6.0,8.0,8.0,1
+Antidoto y Veneno,Eddie Santiago,Salsa,7.0,6.0,8.0,7.0,1
+Aquel Viejo Motón,El Gran Combo,Salsa,9.0,5.0,7.0,9.0,1
+Me Liberé,El Gran Combo,Salsa,9.0,5.0,7.0,9.0,1
+Un Verano En Nueva York,El Gran Combo,Salsa,9.0,5.0,8.0,9.0,1
+Brujería,El Gran Combo,Salsa,9.0,5.0,7.0,9.0,1
+Ojitos Chinos,El Gran Combo,Salsa,9.0,5.0,7.0,9.0,1
+Plástico,Rubén Blades,Salsa,8.0,5.0,8.0,8.0,1
+Decisiones,Rubén Blades,Salsa,8.0,5.0,8.0,8.0,1
+Amor y Control,Rubén Blades,Salsa,6.0,7.0,10.0,6.0,0
+Gitana,Willie Colón,Salsa,8.0,6.0,8.0,8.0,1
+El Gran Varón,Willie Colón,Salsa,8.0,5.0,9.0,8.0,1
+Talento de Televisión,Willie Colón,Salsa,9.0,4.0,7.0,9.0,1
+La Murga,Willie Colón & Héctor Lavoe,Salsa,10.0,5.0,8.0,10.0,1
+Che Che Colé,Willie Colón & Héctor Lavoe,Salsa,10.0,5.0,8.0,10.0,1
+Juanito Alimaña,Héctor Lavoe,Salsa,9.0,5.0,8.0,9.0,1
+Triste y Vacía,Héctor Lavoe,Salsa,7.0,6.0,9.0,7.0,1
+Yamulemau,Joe Arroyo,Salsa,9.0,4.0,7.0,9.0,1
+Rebelión (En Vivo),Joe Arroyo,Salsa,10.0,3.0,9.0,10.0,1
+Provócame,Chayanne,Pop Latino,9.0,5.0,7.0,9.0,1
+Torero,Chayanne,Pop Latino,10.0,4.0,8.0,10.0,1
+Salomé,Chayanne,Pop Latino,9.0,5.0,7.0,9.0,1
+Dejaría Todo,Chayanne,Balada Pop,4.0,7.0,8.0,4.0,0
+Y Tú Te Vas,Chayanne,Balada Pop,3.0,7.0,8.0,3.0,0
+Un Siglo Sin Ti,Chayanne,Balada Pop,3.0,7.0,8.0,3.0,0
+Lo Dejaría Todo,Chayanne,Balada Pop,3.0,7.0,8.0,3.0,0
+La Copa de la Vida,Ricky Martin,Pop Latino,9.0,5.0,8.0,10.0,1
+Livin' la Vida Loca,Ricky Martin,Pop Latino,10.0,5.0,8.0,10.0,1
+María,Ricky Martin,Pop Latino,9.0,6.0,7.0,9.0,1
+She Bangs,Ricky Martin,Pop Latino,9.0,5.0,7.0,9.0,1
+Vuelve,Ricky Martin,Balada Pop,3.0,7.0,9.0,3.0,0
+Fuego de Noche Nieve de Día,Ricky Martin,Balada Pop,3.0,7.0,9.0,3.0,0
+Tal Vez,Ricky Martin,Balada Pop,3.0,7.0,8.0,3.0,0
+Tu Recuerdo,Ricky Martin,Pop Acústico,5.0,6.0,8.0,5.0,0
+Ciega Sordomuda,Shakira,Pop Rock,9.0,5.0,7.0,9.0,1
+Ojos Así,Shakira,Pop Rock,8.0,6.0,8.0,8.0,1
+Inevitable,Shakira,Pop Rock,4.0,7.0,9.0,4.0,0
+Antología,Shakira,Balada Pop,2.0,8.0,9.0,2.0,0
+Donde Estás Corazón,Shakira,Pop Latino,6.0,7.0,7.0,6.0,1
+Pies Descalzos Sueños Blancos,Shakira,Pop Rock,6.0,7.0,7.0,6.0,1
+Si Te Vas,Shakira,Pop Rock,7.0,6.0,8.0,7.0,1
+Moscas En La Casa,Shakira,Balada Pop,2.0,8.0,8.0,2.0,0
+Tú,Shakira,Balada Pop,2.0,8.0,9.0,2.0,0
+Hips Don't Lie,Shakira ft. Wyclef Jean,Pop Latino,10.0,4.0,7.0,10.0,1
+Waka Waka (Esto es África),Shakira,Pop Latino,10.0,4.0,8.0,10.0,1
+Loca,Shakira,Pop Urbano,9.0,3.0,6.0,9.0,1
+Rabiosa,Shakira,Pop Urbano,9.0,3.0,6.0,9.0,1
+El Condor Pasa,Los Inkas,Andino,2.0,9.0,7.0,3.0,0
+Lamento Boliviano,Los Enanitos Verdes,Rock en Español,8.0,6.0,7.0,8.0,1
+Tu Cárcel,Los Enanitos Verdes,Rock en Español,7.0,6.0,8.0,7.0,1
+Guitarras Blancas,Los Enanitos Verdes,Rock en Español,8.0,6.0,7.0,8.0,1
+La Muralla Verde,Los Enanitos Verdes,Rock en Español,8.0,6.0,7.0,8.0,1
+Mil Horas,Los Abuelos de la Nada,Rock en Español,8.0,7.0,7.0,8.0,1
+Triste Canción,El Tri,Rock en Español,5.0,7.0,8.0,5.0,0
+Las Piedras Rodantes,El Tri,Rock en Español,5.0,7.0,8.0,5.0,0
+Afuera,Caifanes,Rock en Español,7.0,6.0,8.0,7.0,1
+Viento,Caifanes,Rock en Español,6.0,7.0,8.0,6.0,1
+No Dejes Que...,Caifanes,Rock en Español,6.0,7.0,8.0,6.0,1
+Kumbala,Maldita Vecindad,Rock/Ska,6.0,7.0,9.0,5.0,0
+Pachuco,Maldita Vecindad,Ska,9.0,5.0,7.0,9.0,1
+Gimme Tha Power,Molotov,Rock Alternativo,7.0,6.0,9.0,7.0,1
+Frijolero,Molotov,Rock Alternativo,7.0,5.0,8.0,7.0,1
+Rastamandita,Molotov,Rock,9.0,4.0,6.0,9.0,1
+Matador,Los Fabulosos Cadillacs,Ska/Rock,9.0,5.0,8.0,9.0,1
+Vasos Vacíos,Los Fabulosos Cadillacs ft. Celia Cruz,Ska/Rock,8.0,6.0,8.0,8.0,1
+Siguiendo La Luna,Los Fabulosos Cadillacs,Reggae Rock,6.0,7.0,8.0,6.0,0
+Mal Bicho,Los Fabulosos Cadillacs,Ska/Rock,8.0,5.0,8.0,8.0,1
+Calaveras y Diablitos,Los Fabulosos Cadillacs,Reggae,7.0,6.0,7.0,7.0,1
+El Satánico Dr. Cadillac,Los Fabulosos Cadillacs,Ska/Rock,8.0,5.0,7.0,8.0,1
+La Guitarra,Los Auténticos Decadentes,Ska/Pop,9.0,5.0,7.0,9.0,1
+Loco (Tu Forma de Ser),Los Auténticos Decadentes,Ska/Pop,8.0,6.0,8.0,8.0,1
+Corazón,Los Auténticos Decadentes,Ska/Pop,9.0,5.0,7.0,9.0,1
+El Murguero,Los Auténticos Decadentes,Ska/Pop,10.0,4.0,7.0,10.0,1
+Flaca,Andrés Calamaro,Rock en Español,7.0,7.0,7.0,7.0,1
+Mil Horas (Versión Andrés Calamaro),Andrés Calamaro,Rock en Español,8.0,6.0,7.0,8.0,1
+Te Quiero Igual,Andrés Calamaro,Rock en Español,7.0,6.0,7.0,7.0,1
+La Flaca,Jarabe de Palo,Rock en Español,8.0,6.0,7.0,8.0,1
+Depende,Jarabe de Palo,Rock en Español,7.0,6.0,7.0,7.0,1
+Bonito,Jarabe de Palo,Rock en Español,8.0,5.0,7.0,8.0,1
+El Duelo,La Ley,Rock en Español,6.0,6.0,8.0,6.0,1
+Mentira,La Ley,Rock en Español,5.0,7.0,8.0,5.0,0
+Aquí,La Ley,Rock en Español,6.0,6.0,8.0,6.0,1
+El Mariachi Loco,Mariachi Vargas,Mariachi,10.0,3.0,6.0,10.0,1
+La Boa,La Sonora Santanera,Tropical,9.0,5.0,6.0,9.0,1
+La Chona,Los Tucanes de Tijuana,Norteño,10.0,2.0,5.0,10.0,1
+El Tucanazo,Los Tucanes de Tijuana,Norteño,9.0,3.0,5.0,9.0,1
+Juana La Cubana,Fito Olivares,Cumbia,9.0,4.0,5.0,9.0,1
+Agachadita,Fito Olivares,Cumbia,9.0,3.0,5.0,9.0,1
+Sergio El Bailador,Bronco,Grupero,9.0,4.0,6.0,9.0,1
+Que No Quede Huella,Bronco,Grupero,8.0,6.0,8.0,8.0,1
+Oro,Bronco,Grupero,8.0,5.0,7.0,8.0,1
+Con Zapatos de Tacón,Los Bukis,Grupero,9.0,5.0,6.0,9.0,1
+Mi Cucú,La Sonora Dinamita,Cumbia,10.0,3.0,5.0,9.0,1
+Escándalo,La Sonora Dinamita,Cumbia,9.0,4.0,6.0,9.0,1
+Que Nadie Sepa Mi Sufrir,La Sonora Dinamita,Cumbia,9.0,4.0,8.0,9.0,1
+Mil Horas,La Sonora Dinamita,Cumbia,9.0,4.0,7.0,9.0,1
+Tiene Espinas El Rosal,Grupo Cañaveral,Cumbia,9.0,4.0,8.0,9.0,1
+No Te Voy a Perdonar,Grupo Cañaveral,Cumbia,9.0,3.0,7.0,9.0,1
+La Cadenita,La Sonora Dinamita,Cumbia,9.0,5.0,6.0,9.0,1
+Amor de Mis Amores,La Sonora Dinamita,Cumbia,9.0,4.0,7.0,9.0,1
+17 Años,Los Ángeles Azules,Cumbia,9.0,3.0,7.0,9.0,1
+Mis Sentimientos,Los Ángeles Azules,Cumbia,8.0,4.0,8.0,8.0,1
+Entrega de Amor,Los Ángeles Azules,Cumbia,8.0,4.0,8.0,9.0,1
+Amor a Primera Vista,Los Ángeles Azules ft. Belinda,Cumbia,9.0,2.0,7.0,9.0,1
+Nunca Es Suficiente,Los Ángeles Azules ft. Natalia Lafourcade,Cumbia,8.0,4.0,9.0,8.0,1
+Ramito de Violetas,Mi Banda El Mexicano,Tecnobanda,9.0,4.0,7.0,10.0,1
+No Bailes de Caballito,Mi Banda El Mexicano,Tecnobanda,10.0,3.0,5.0,10.0,1
+Muriendo Por Tu Amor,Mi Banda El Mexicano,Tecnobanda,9.0,4.0,6.0,9.0,1
+La Parra,Mi Banda El Mexicano,Tecnobanda,9.0,3.0,5.0,9.0,1
+Payaso de Rodeo,Caballo Dorado,Country,10.0,2.0,4.0,10.0,1
+No Rompas Más,Caballo Dorado,Country,10.0,3.0,4.0,9.0,1
+Vuela Vuela,Magneto,Pop Noventero,8.0,6.0,6.0,8.0,1
+La Calle de las Sirenas,Kabah,Pop Noventero,9.0,6.0,6.0,9.0,1
+Al Pasito,Kabah,Pop Noventero,9.0,5.0,5.0,9.0,1
+Shabadabada,OV7,Pop Noventero,9.0,5.0,6.0,9.0,1
+Te Quiero Tanto Tanto,OV7,Pop Noventero,5.0,7.0,8.0,5.0,0
+Mírame a los Ojos,OV7,Pop Noventero,9.0,5.0,6.0,9.0,1
+Enloquéceme,OV7,Pop Noventero,9.0,4.0,6.0,9.0,1
+La Colegiala,Caló,Pop Latino,9.0,5.0,5.0,9.0,1
+Formas de Amor,Caló,Pop Latino,8.0,6.0,7.0,8.0,1
+Azúcar Amargo,Fey,Pop Noventero,8.0,6.0,7.0,8.0,1
+Media Naranja,Fey,Pop Noventero,8.0,6.0,6.0,8.0,1
+Cosas del Amor,Ana Gabriel & Vikki Carr,Balada Pop,3.0,8.0,9.0,3.0,0
+Quién Como Tú,Ana Gabriel,Balada Pop,3.0,7.0,8.0,4.0,0
+Es Demasiado Tarde,Ana Gabriel,Balada Ranchera,2.0,8.0,9.0,3.0,0
+Ay Amor,Ana Gabriel,Balada Pop,2.0,8.0,8.0,3.0,0
+Mi Talismán,Ana Gabriel,Balada Pop,3.0,7.0,8.0,3.0,0
+Luna,Ana Gabriel,Balada Pop,2.0,8.0,9.0,3.0,0
+Hacer el Amor con Otro,Alejandra Guzmán,Rock Pop,6.0,6.0,9.0,7.0,1
+Eternamente Bella,Alejandra Guzmán,Rock Pop,8.0,5.0,7.0,8.0,1
+Mírala Míralo,Alejandra Guzmán,Rock Pop,8.0,5.0,8.0,8.0,1
+Volverte a Amar,Alejandra Guzmán,Rock Pop,4.0,6.0,8.0,4.0,0
+Detrás de Mi Ventana,Yuri,Balada,2.0,8.0,9.0,3.0,0
+Es ella más que yo,Yuri,Balada,2.0,7.0,8.0,3.0,0
+El Apagón,Yuri,Pop Tropical,9.0,5.0,6.0,9.0,1
+Mentiras,Daniela Romo,Pop Latino,8.0,6.0,7.0,8.0,1
+Celos,Daniela Romo,Pop Latino,8.0,6.0,7.0,8.0,1
+Él Me Mintió,Amanda Miguel,Balada,1.0,8.0,10.0,3.0,0
+Así No Te Amará Jamás,Amanda Miguel,Balada,2.0,8.0,9.0,3.0,0
+Mi Buen Corazón,Amanda Miguel,Balada,3.0,7.0,8.0,4.0,0
+Castillos,Amanda Miguel,Balada,2.0,8.0,9.0,3.0,0
+Mentiras,Los Amigos Invisibles,Funk Pop,8.0,3.0,5.0,8.0,1
+Para No Verte Más,La Mosca Tsé-Tsé,Ska Pop,9.0,5.0,6.0,9.0,1
+Gato López,Ska-P,Ska,9.0,4.0,6.0,9.0,1
+Caminos de Michoacán,Federico Villa,Ranchera,7.0,7.0,8.0,8.0,1
+La Ley del Monte,Vicente Fernández,Ranchera,5.0,8.0,9.0,6.0,0
+Las Llaves de Mi Alma,Vicente Fernández,Ranchera,4.0,8.0,8.0,5.0,0
+De Qué Manera Te Olvido,Vicente Fernández,Ranchera,3.0,8.0,9.0,4.0,0
+Hermoso Cariño,Vicente Fernández,Ranchera,6.0,7.0,8.0,6.0,1
+La Media Vuelta,José Alfredo Jiménez,Ranchera,2.0,9.0,9.0,3.0,0
+El Jinete,José Alfredo Jiménez,Ranchera,1.0,9.0,10.0,2.0,0
+Si Nos Dejan,José Alfredo Jiménez,Ranchera,3.0,8.0,8.0,4.0,0
+Un Puño de Tierra,Antonio Aguilar,Ranchera,6.0,7.0,8.0,7.0,1
+Tristes Recuerdos,Antonio Aguilar,Ranchera,5.0,8.0,8.0,6.0,0
+Gavilancillo,Antonio Aguilar,Ranchera,7.0,6.0,7.0,7.0,1
+Mi Gusto Es,Banda El Recodo,Banda,9.0,5.0,7.0,9.0,1
+Te Presumo,Banda El Recodo,Banda,5.0,6.0,8.0,5.0,0
+Y Todo Para Qué,Intocable,Tejano Norteño,6.0,6.0,8.0,6.0,1
+Fuerte No Soy,Intocable,Tejano Norteño,7.0,6.0,9.0,7.0,1
+Enséñame a Olvidarte,Intocable,Tejano Norteño,6.0,6.0,8.0,6.0,1
+Coqueta,Intocable,Tejano Norteño,8.0,5.0,7.0,8.0,1
+Sueña,Intocable,Tejano Norteño,5.0,7.0,8.0,5.0,0
+La Boa,La Sonora Santanera,Tropical/Chachachá,9.0,6.0,7.0,8.0,1
+Perfume de Gardenias,La Sonora Santanera,Bolero Tropical,4.0,8.0,8.0,5.0,0
+El Año Viejo,Tony Camargo,Tropical,9.0,8.0,7.0,9.0,1
+Amor de Mis Amores,Margarita la Diosa de la Cumbia,Cumbia,9.0,5.0,8.0,9.0,1
+Qué Bello,Margarita la Diosa de la Cumbia,Cumbia,9.0,4.0,8.0,9.0,1
+Escándalo,Margarita la Diosa de la Cumbia,Cumbia,9.0,5.0,7.0,9.0,1
+El Cable,Los Corinthian,Cumbia,10.0,4.0,5.0,10.0,1
+La Pollera Colá,Margarita la Diosa de la Cumbia,Cumbia,10.0,5.0,6.0,9.0,1
+Viento,Caifanes,Rock en Español,6.0,7.0,8.0,7.0,1
+Afuera,Caifanes,Rock en Español,7.0,6.0,8.0,8.0,1
+Nubes,Caifanes,Rock en Español,8.0,6.0,7.0,8.0,1
+Kumbala,Maldita Vecindad,Ska/Rock,6.0,7.0,9.0,6.0,0
+Pachuco,Maldita Vecindad,Ska/Punk,9.0,5.0,8.0,10.0,1
+La Flaca,Jarabe de Palo,Rock Pop,8.0,6.0,7.0,8.0,1
+Triste Canción,El Tri,Rock Urbano,5.0,7.0,8.0,6.0,0
+Las Piedras Rodantes,El Tri,Rock Urbano,5.0,8.0,8.0,6.0,0
+La Cita,Galy Galiano,Salsa Romántica,8.0,6.0,8.0,8.0,1
+Llorarás,Oscar D'León,Salsa,9.0,5.0,8.0,9.0,1
+Tu Amor Me Hace Bien,Marc Anthony,Salsa,9.0,3.0,8.0,9.0,1
+Suavemente,Elvis Crespo,Merengue,10.0,5.0,7.0,10.0,1
+El Tiburón,Proyecto Uno,Merengue House,10.0,5.0,6.0,10.0,1
+Provócame,Chayanne,Pop Latino,9.0,5.0,7.0,9.0,1
+Torero,Chayanne,Pop Latino,10.0,4.0,8.0,10.0,1
+Salomé,Chayanne,Pop Latino,9.0,5.0,7.0,9.0,1
+Dejaría Todo,Chayanne,Balada Pop,3.0,7.0,9.0,3.0,0
+Y Tú Te Vas,Chayanne,Balada Pop,2.0,7.0,8.0,3.0,0
+Un Siglo Sin Ti,Chayanne,Balada Pop,2.0,7.0,8.0,3.0,0
+Livin' la Vida Loca,Ricky Martin,Pop Latino,9.0,5.0,7.0,10.0,1
+Vuelve,Ricky Martin,Balada Pop,2.0,7.0,9.0,3.0,0
+Fuego de Noche Nieve de Día,Ricky Martin,Balada Pop,2.0,7.0,9.0,3.0,0
+Tal Vez,Ricky Martin,Balada Pop,2.0,7.0,8.0,3.0,0
+Ciega Sordomuda,Shakira,Pop Rock,9.0,5.0,7.0,9.0,1
+Ojos Así,Shakira,Pop Rock,8.0,6.0,8.0,8.0,1
+Inevitable,Shakira,Pop Rock,4.0,7.0,9.0,4.0,0
+Antología,Shakira,Balada Pop,2.0,8.0,9.0,2.0,0
+Mírame a los Ojos,OV7,Pop Noventero,9.0,6.0,7.0,9.0,1
+Enloquéceme,OV7,Pop Noventero,9.0,5.0,7.0,9.0,1
+Te Quiero Tanto Tanto,OV7,Pop Noventero,4.0,7.0,8.0,4.0,0
+La Calle de las Sirenas,Kabah,Pop Noventero,9.0,7.0,6.0,9.0,1
+Vuela Vuela,Magneto,Pop Noventero,8.0,7.0,6.0,8.0,1
+Azúcar Amargo,Fey,Pop Noventero,8.0,6.0,7.0,8.0,1
+Media Naranja,Fey,Pop Noventero,8.0,6.0,6.0,8.0,1
+Hacer el Amor con Otro,Alejandra Guzmán,Rock Pop,5.0,6.0,9.0,6.0,0
+Eternamente Bella,Alejandra Guzmán,Rock Pop,8.0,5.0,7.0,8.0,1
+Mírala Míralo,Alejandra Guzmán,Rock Pop,7.0,5.0,8.0,8.0,1
+Detrás de Mi Ventana,Yuri,Balada,2.0,7.0,9.0,3.0,0
+Él Me Mintió,Amanda Miguel,Balada,1.0,8.0,10.0,2.0,0
+Así No Te Amará Jamás,Amanda Miguel,Balada,2.0,8.0,9.0,3.0,0
+Muriendo Por Tu Amor,Mi Banda El Mexicano,Tecnobanda,9.0,5.0,6.0,9.0,1
+La Chona (En Vivo),Los Tucanes de Tijuana,Norteño,10.0,3.0,6.0,10.0,1
+Rebelde,Rebelde,,3.0,4.0,3.5,4.0,0

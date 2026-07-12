@@ -106,6 +106,15 @@ def train_model():
          return jsonify({'error': 'No features selected for training'}), 400
          
     try:
+        # 1. Asegurar que las features sean numéricas (si el usuario mandó texto por error, lo forzamos a numérico y los textos se vuelven NaN)
+        df_to_use[features] = df_to_use[features].apply(pd.to_numeric, errors='coerce')
+        
+        # 2. Rellenar los valores vacíos (NaN) con el promedio de la columna para que el algoritmo no falle
+        df_to_use[features] = df_to_use[features].fillna(df_to_use[features].mean())
+        
+        # Si toda una columna es texto, su promedio es NaN, llenamos con 0
+        df_to_use[features] = df_to_use[features].fillna(0)
+        
         if algorithm == 'kmeans':
             clusters = train_kmeans(df_to_use, features, n_clusters, "kmeans_model")
         elif algorithm == 'agglomerative':
@@ -117,9 +126,14 @@ def train_model():
         df_to_use['Cluster'] = clusters
         results_df = df_to_use
         
+        # Convertimos NaN a None para que JSON no truene
+        results_df = results_df.replace({pd.NA: None})
+        import numpy as np
+        results_df = results_df.replace({np.nan: None})
+        
         return jsonify({
             'message': 'Model trained successfully',
-            'results': df_to_use.head(100).to_dict(orient='records')
+            'results': results_df.head(100).to_dict(orient='records')
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
