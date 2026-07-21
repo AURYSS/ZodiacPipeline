@@ -1,23 +1,24 @@
-/* Ultra-Premium Neon Glassmorphism Theme */
+/* Academic Data Science Lab Theme */
 :root {
-    --bg-base: #030014;
-    --glass-bg: rgba(20, 15, 45, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-inner: rgba(0, 0, 0, 0.2);
+    --bg-base: #0f172a; /* Slate 900 */
+    --glass-bg: rgba(30, 41, 59, 0.7); /* Slate 800 */
+    --glass-border: rgba(148, 163, 184, 0.15);
+    --glass-inner: rgba(15, 23, 42, 0.4);
     
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
-    --text-muted: #475569;
+    --text-muted: #64748b;
     
-    --primary: #6366f1; /* Indigo */
-    --primary-glow: rgba(99, 102, 241, 0.5);
-    --secondary: #a855f7; /* Purple */
-    --accent: #06b6d4; /* Cyan */
+    --primary: #3b82f6; /* Blue 500 */
+    --primary-glow: rgba(59, 130, 246, 0.2);
+    --secondary: #6366f1; /* Indigo 500 */
+    --accent: #0ea5e9; /* Sky 500 */
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
     
     --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Lora', serif;
     --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -33,30 +34,14 @@ body {
     position: relative;
 }
 
-/* Background Animated Meshes */
+/* Background Minimalist */
 .bg-mesh {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: -1;
-    overflow: hidden;
-    background: radial-gradient(circle at center, #0a0520 0%, #030014 100%);
+    background: radial-gradient(circle at top left, #1e293b 0%, #0f172a 100%);
 }
-
-.mesh-blob {
-    position: absolute;
-    filter: blur(100px);
-    opacity: 0.5;
-    animation: float 20s infinite alternate ease-in-out;
-}
-
-.blob-1 { width: 500px; height: 500px; background: var(--primary); top: -200px; left: -100px; }
-.blob-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -100px; animation-delay: -5s; }
-.blob-3 { width: 600px; height: 600px; background: var(--accent); top: 50%; left: 50%; opacity: 0.2; animation-delay: -10s; }
-
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(50px, 50px) scale(1.1); }
-}
+.mesh-blob { display: none; } /* Quitamos los blobs flotantes tipo neón */
 
 /* Glass Panels */
 .glass-panel {
@@ -335,3 +320,58 @@ body {
 .file-input { width: 100%; padding: 16px; background: rgba(0,0,0,0.2); border: 2px dashed var(--text-muted); border-radius: 12px; color: white; font-family: var(--font-mono); font-size: 13px; transition: 0.3s; }
 .file-input:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
 .upload-actions { display: flex; gap: 16px; }
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center; z-index: 10000;
+}
+.modal-overlay.hidden { display: none !important; }
+.modal-content {
+    width: 98%; max-width: 1400px; max-height: 95vh; overflow-y: auto;
+    border-radius: 16px; display: flex; flex-direction: column;
+}
+.modal-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--glass-border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h3 { color: white; margin: 0; font-size: 18px; font-weight: 600; }
+.btn-close {
+    background: transparent; border: none; color: white; font-size: 24px;
+    cursor: pointer; transition: 0.2s;
+}
+.btn-close:hover { color: var(--danger); transform: scale(1.1); }
+.modal-body { padding: 24px; }
+
+.stats-cards-grid {
+    display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: stretch;
+    gap: 12px; margin-top: 16px; width: 100%;
+}
+.stat-box {
+    background: var(--glass-inner); border: 1px solid var(--glass-border);
+    padding: 12px 10px; border-radius: 8px; text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 0; /* Ensures flex children don't overflow */
+}
+.formula-label {
+    display: flex; justify-content: center; align-items: center;
+    font-size: 13px; margin-bottom: 8px; color: var(--primary);
+    min-height: 40px;
+}
+.stat-box span:not(.formula-label) { display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+.stat-box strong { display: block; font-size: 18px; color: white; font-family: var(--font-mono); }
+
+.math-formula {
+    display: inline-block;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin-top: 8px;
+    border: 1px solid var(--glass-border);
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 14px;
+}
+

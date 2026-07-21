@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const trainBtn = document.getElementById('train-btn');
     const trainSpinner = document.getElementById('train-spinner');
     
+    // Novedad: Elementos del Modal de Estadísticas
+    const statsBtn = document.getElementById('stats-btn');
+    const statsModal = document.getElementById('stats-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalVarSelect = document.getElementById('modal-var-select');
+    const numericStatsGrid = document.getElementById('numeric-stats-grid');
+    let descriptiveStatsData = null;
+    let varChartInstance = null;
+    let radarChartInstance = null;
+    
     let currentAlgorithm = 'kmeans';
     let availableColumns = [];
     let chartInstance = null; // To keep track of Chart.js
@@ -75,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterSection.style.display = 'block';
         trainSection.style.display = 'block';
         resultsSection.style.display = 'none'; // hide previous results
+        statsBtn.style.display = 'inline-block'; // mostrar botón de stats
         
         categoryColSelect.innerHTML = '<option value="">-- Ninguno --</option>';
         availableColumns.forEach(col => {
@@ -182,6 +193,173 @@ document.addEventListener('DOMContentLoaded', () => {
         if (col && val) url += `&category_col=${col}&category_val=${val}`;
         window.location.href = url;
     });
+
+    // --- LÓGICA DE ESTADÍSTICA DESCRIPTIVA (EDA) ---
+    statsBtn.addEventListener('click', async () => {
+        try {
+            showToast('Generando estadística descriptiva...', 'info');
+            const res = await fetch('/descriptive_stats');
+            const data = await res.json();
+            
+            if (res.ok) {
+                descriptiveStatsData = data.stats;
+                statsModal.classList.remove('hidden');
+                
+                // Llenar el selector con las variables numéricas
+                modalVarSelect.innerHTML = '';
+                Object.keys(descriptiveStatsData).forEach(col => {
+                    modalVarSelect.innerHTML += `<option value="${col}">${col}</option>`;
+                });
+                
+                // Mostrar datos de la primera variable
+                if(Object.keys(descriptiveStatsData).length > 0) {
+                    renderDescriptiveStats(Object.keys(descriptiveStatsData)[0]);
+                }
+                
+                // Renderizar fórmulas de MathJax si existen
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            } else {
+                showToast(`Error EDA: ${data.error}`, 'error');
+            }
+        } catch (e) {
+            showToast('Connection failed during EDA.', 'error');
+        }
+    });
+    
+    closeModalBtn.addEventListener('click', () => {
+        statsModal.classList.add('hidden');
+    });
+    
+    modalVarSelect.addEventListener('change', (e) => {
+        renderDescriptiveStats(e.target.value);
+    });
+    
+    function renderDescriptiveStats(colName) {
+        const stats = descriptiveStatsData[colName];
+        if (!stats) return;
+        
+        if (stats.type === 'categorical') {
+            numericStatsGrid.style.display = 'none';
+            renderDoughnutChart(colName, stats.counts);
+        } else {
+            numericStatsGrid.style.display = 'flex';
+            document.getElementById('m-mean').textContent = stats.mean;
+            document.getElementById('m-median').textContent = stats.median;
+            document.getElementById('m-var').textContent = stats.variance;
+            document.getElementById('m-std').textContent = stats.std_dev;
+            document.getElementById('m-range').textContent = stats.range;
+            document.getElementById('m-min').textContent = stats.min;
+            document.getElementById('m-max').textContent = stats.max;
+            renderHistogram(colName, stats.histogram);
+        }
+        
+        renderGlobalRadar();
+    }
+    
+    function renderHistogram(colName, histogramData) {
+        if (varChartInstance) varChartInstance.destroy();
+        
+        const ctx = document.getElementById('varChart').getContext('2d');
+        const labels = histogramData.bins.slice(0, -1).map((b, i) => `${b.toFixed(2)} - ${histogramData.bins[i+1].toFixed(2)}`);
+        
+        varChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `Frecuencia`,
+                    data: histogramData.counts,
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: `Histograma: ${colName}`, color: 'white', font: { size: 14 } },
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                    y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+    }
+
+    function renderDoughnutChart(colName, countsData) {
+        if (varChartInstance) varChartInstance.destroy();
+        
+        const ctx = document.getElementById('varChart').getContext('2d');
+        const labels = Object.keys(countsData);
+        const data = Object.values(countsData);
+        
+        varChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9'],
+                    borderColor: 'transparent'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: `Distribución: ${colName}`, color: 'white', font: { size: 14 } },
+                    legend: { position: 'right', labels: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+
+    function renderGlobalRadar() {
+        if (radarChartInstance) radarChartInstance.destroy();
+        
+        const numericCols = Object.keys(descriptiveStatsData).filter(k => descriptiveStatsData[k].type === 'numeric');
+        if (numericCols.length === 0) return;
+        
+        // Normalize means to 0-1 scale for comparison
+        let means = numericCols.map(col => descriptiveStatsData[col].mean);
+        let maxMean = Math.max(...means) || 1;
+        let normMeans = means.map(m => (m / maxMean) * 100);
+
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        radarChartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: numericCols,
+                datasets: [{
+                    label: 'Perfil Global (Medias relativas)',
+                    data: normMeans,
+                    backgroundColor: 'rgba(99, 102, 241, 0.4)',
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#6366f1'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Radar de Atributos Numéricos', color: 'white', font: { size: 14 } },
+                    legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255,255,255,0.1)' },
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        pointLabels: { color: '#94a3b8', font: { size: 10 } },
+                        ticks: { display: false }
+                    }
+                }
+            }
+        });
+    }
+    // -----------------------------------------------
     
     algoCards.forEach(card => {
         card.addEventListener('click', () => {

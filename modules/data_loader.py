@@ -2,13 +2,18 @@ import pandas as pd
 
 def load_and_validate_csv(file_path_or_buffer):
     """
-    Carga un archivo CSV y valida que contenga la estructura requerida:
+    Carga un archivo CSV o Excel y valida que contenga la estructura requerida:
     id, edad, genero, signo, p1..p15, p1a..p15a
     """
     try:
-        df = pd.read_csv(file_path_or_buffer)
+        # Detectamos si es excel por el nombre del archivo si está disponible en el objeto
+        filename = getattr(file_path_or_buffer, "name", "").lower()
+        if filename.endswith(".xlsx") or filename.endswith(".xls"):
+            df = pd.read_excel(file_path_or_buffer)
+        else:
+            df = pd.read_csv(file_path_or_buffer)
     except Exception as e:
-        return None, f"Error al leer el archivo CSV: {str(e)}"
+        return None, f"Error al leer el archivo: {str(e)}"
     
     # Validaciones de columnas requeridas
     required_cols = ["id", "edad", "genero", "signo"]
