@@ -34,46 +34,120 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Estilización premium personalizada
+# Estilización premium personalizada (Zodiac Theme)
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;600&display=swap');
+    
+    /* Fondo Cósmico */
+    .stApp {
+        background: radial-gradient(circle at center, #1b0a31 0%, #080312 100%);
+        color: #e2e8f0;
+    }
+    
+    /* Agregar constelaciones sutiles simuladas mediante ruido radial o imagen (opcional, aquí usamos un gradiente profundo) */
+    .stApp::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
+                          radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                          radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+        background-size: 550px 550px, 350px 350px, 250px 250px;
+        background-position: 0 0, 40px 60px, 130px 270px;
+        opacity: 0.15;
+        z-index: -1;
+    }
+
+    h1, h2, h3, .main-title, .section-header {
+        font-family: 'Cinzel', serif !important;
+    }
+
+    p, span, div {
+        font-family: 'Inter', sans-serif;
+    }
+
     .main-title {
-        font-size: 2.8rem;
+        font-size: 3rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #6366f1, #a855f7, #06b6d4);
+        background: linear-gradient(135deg, #d4af37, #f3e5ab, #d4af37);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
+        text-shadow: 0px 4px 20px rgba(212, 175, 55, 0.3);
     }
     .sub-title {
-        color: #94a3b8;
-        font-size: 1.1rem;
+        color: #bfa87a;
+        font-size: 1.2rem;
+        font-weight: 300;
         margin-bottom: 2rem;
+        letter-spacing: 1px;
     }
     .section-header {
         font-size: 1.8rem;
-        font-weight: 700;
-        color: #ffffff;
-        border-bottom: 2px solid rgba(255,255,255,0.1);
+        font-weight: 600;
+        color: #d4af37;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.2);
         padding-bottom: 0.5rem;
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
+        text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.2);
     }
+    
+    /* Panel de Glassmorphism Cósmico */
     .metric-card {
-        background-color: rgba(20, 15, 45, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: rgba(27, 10, 49, 0.6) !important;
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
         border-radius: 12px;
-        padding: 1.2rem;
+        padding: 1.5rem;
         text-align: center;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s, box-shadow 0.3s;
     }
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.15);
+        border: 1px solid rgba(212, 175, 55, 0.5) !important;
+    }
+    
     .metric-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #06b6d4;
+        font-size: 2.2rem;
+        font-weight: 800;
+        font-family: 'Cinzel', serif;
+        background: linear-gradient(135deg, #f3e5ab, #d4af37);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .metric-label {
-        font-size: 0.9rem;
-        color: #94a3b8;
+        font-size: 0.95rem;
+        color: #bfa87a;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 5px;
+    }
+    
+    /* Personalización de Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: rgba(8, 3, 18, 0.85) !important;
+        border-right: 1px solid rgba(212, 175, 55, 0.15);
+    }
+    
+    /* Botones Dorados */
+    .stButton > button {
+        background: linear-gradient(135deg, #8b5cf6, #4c1d95) !important;
+        color: #f3e5ab !important;
+        border: 1px solid rgba(212, 175, 55, 0.5) !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #9333ea, #5b21b6) !important;
+        border-color: #d4af37 !important;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
+        transform: scale(1.02);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -127,8 +201,8 @@ if pantalla == "1. Ingesta de Datos":
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.write("Suba el archivo CSV con las respuestas Likert (`p1`-`p15`) y respuestas abiertas (`p1a`-`p15a`) recolectadas.")
-        uploaded_file = st.file_uploader("Subir dataset en formato .csv", type=["csv"])
+        st.write("Suba el archivo CSV o Excel con las respuestas Likert (`p1`-`p15`) y respuestas abiertas (`p1a`-`p15a`) recolectadas.")
+        uploaded_file = st.file_uploader("Subir dataset en formato .csv o .xlsx", type=["csv", "xlsx", "xls"])
         
         if uploaded_file is not None:
             df, msg = load_and_validate_csv(uploaded_file)
