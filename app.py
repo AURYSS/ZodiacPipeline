@@ -174,7 +174,7 @@ st.markdown('<div class="main-title">🔮 Zodiacal Clustering Pipeline</div>', u
 st.markdown('<div class="sub-title">Unidad IV: Análisis No Supervisado • Extracción de Conocimientos en Base de Datos</div>', unsafe_allow_html=True)
 
 # Menú de Navegación Lateral (7 Pantallas)
-st.sidebar.image("https://img.icons8.com/nolan/96/crystal-ball.png", width=80)
+st.sidebar.image("static/logo.png", use_container_width=True)
 st.sidebar.markdown("### Navegación del Sistema")
 pantalla = st.sidebar.radio(
     "Seleccione una pantalla:",
