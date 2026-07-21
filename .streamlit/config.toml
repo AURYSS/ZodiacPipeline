@@ -1,3 +1,4 @@
 [server]
+fileWatcherType = "none"
 maxUploadSize = 1000
 maxMessageSize = 500

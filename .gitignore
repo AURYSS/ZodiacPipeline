@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+.DS_Store
+*.db
+models/*.pkl
+*.csv
+!data/datos_prueba_zodiac.csv
