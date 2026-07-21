@@ -25,6 +25,7 @@ from modules.visualizations import (
     plot_distribucion_signo,
     plot_matriz_correlacion
 )
+from modules.report_generator import generate_pdf_report
 
 # Configuración de página de Streamlit
 st.set_page_config(
@@ -520,35 +521,41 @@ elif pantalla == "7. Zona de Descargas":
             st.info("No hay ningún modelo entrenado guardado.")
             
     with col2:
-        st.markdown("### Reporte Estadístico Resumido")
+        st.markdown("### Reporte Estadístico Ejecutivo")
+        st.write("Descarga un informe profesional en PDF (incluye logo y tablas de resultados) listo para presentar.")
+        
         if st.session_state.df_results is not None:
             df = st.session_state.df_results
             metrics = st.session_state.model_metrics
+            algo = st.session_state.last_algorithm
             
-            report = f"""======================================================
-REPORTE ESTADÍSTICO DE PIPELINE ZODIACAL CLUSTERING
-======================================================
-Algoritmo Utilizado: {st.session_state.last_algorithm.upper()}
-Métricas de Rúbrica:
-- Silhouette Score: {metrics.get('Silhouette Score', 0.0):.4f}
-"""
-            if "Inertia" in metrics:
-                report += f"- Inertia: {metrics.get('Inertia', 0.0):.2f}\n"
-            elif "Noise points" in metrics:
-                report += f"- Puntos de Ruido: {metrics.get('Noise points', 0)}\n"
-            
-            report += f"\nResumen por Clúster:\n"
             cluster_counts = df["Cluster"].value_counts().to_dict()
-            for clust, count in cluster_counts.items():
-                report += f"- Clúster {clust}: {count} individuos\n"
-                
-            st.text_area("Vista previa del reporte:", report, height=200)
+            
+            # Generar gráficos en PNG usando Kaleido para inyectar en el PDF
+            graphs_bytes = []
+            try:
+                features = st.session_state.get('features_used', [])
+                if features:
+                    df_feat = df[features].copy()
+                    df_pca, _ = apply_pca_reduction(df_feat, n_components=2)
+                    labels = df["Cluster"]
+                    
+                    fig1 = plot_pca_2d(df_pca, labels)
+                    graphs_bytes.append(fig1.to_image(format="png", width=800, height=600))
+                    
+                    fig2 = plot_distribucion_signos_cluster(df)
+                    graphs_bytes.append(fig2.to_image(format="png", width=800, height=600))
+            except Exception as e:
+                st.error(f"Ocurrió un error al generar las gráficas para el PDF: {str(e)}")
+            
+            # Generar PDF y forzar conversión a bytes puro para Streamlit
+            pdf_bytes = bytes(generate_pdf_report(algo, metrics, cluster_counts, graphs_bytes))
             
             st.download_button(
-                label="Descargar Reporte Completo (TXT)",
-                data=report.encode('utf-8'),
-                file_name="reporte_zodiacal_clustering.txt",
-                mime="text/plain",
+                label="📥 Descargar Reporte (PDF)",
+                data=pdf_bytes,
+                file_name="reporte_ejecutivo_zodiacal.pdf",
+                mime="application/pdf",
                 use_container_width=True
             )
         else:
