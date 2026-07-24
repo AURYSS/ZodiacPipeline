@@ -232,7 +232,10 @@ if pantalla == "1. Ingesta de Datos":
                         st.session_state.df_raw = obtener_todas_las_encuestas()
                         st.session_state.df_filtered = st.session_state.df_raw.copy()
                     except Exception as e:
-                        st.error(f"Error de conexión a Postgres: {e}")
+                        if isinstance(e, UnicodeDecodeError):
+                            st.error("Error de conexión: El servidor PostgreSQL local rechazó la conexión. Por favor verifica que tu contraseña del usuario 'postgres' sea correcta y que hayas creado la base de datos vacía llamada 'zodiac' en pgAdmin.")
+                        else:
+                            st.error(f"Error de conexión a Postgres: {e}")
             else:
                 st.error(f"Error de Validación: {msg}")
                 
@@ -248,7 +251,10 @@ if pantalla == "1. Ingesta de Datos":
                     st.session_state.df_raw = obtener_todas_las_encuestas()
                     st.session_state.df_filtered = st.session_state.df_raw.copy()
                 except Exception as e:
-                    st.error(f"Error al conectar con Postgres: {e}")
+                    if isinstance(e, UnicodeDecodeError):
+                        st.error("Error de conexión: El servidor PostgreSQL local rechazó la conexión. Verifica tu contraseña y que la base de datos 'zodiac' exista.")
+                    else:
+                        st.error(f"Error de conexión a Postgres: {e}")
             else:
                 st.error("No se encontró el dataset en 'data/datos_prueba_zodiac.csv'.")
                 
@@ -521,16 +527,50 @@ elif pantalla == "7. Zona de Descargas":
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Descargar Resultados en CSV")
+        st.markdown("### Descargar Resultados (Excel / CSV)")
         if st.session_state.df_results is not None:
-            csv_res = st.session_state.df_results.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="Descargar Dataset de Resultados (CSV)",
-                data=csv_res,
-                file_name="resultados_zodiacal_clustering.csv",
-                mime="text/csv",
-                use_container_width=True
-            )
+            df_res = st.session_state.df_results
+            
+            tipo_descarga = st.radio("Seleccione el formato y tipo de datos:", 
+                                     ["CSV Completo", "Excel Cuantitativo (Numérico)", "Excel Cualitativo (Texto/Categorías)"])
+            
+            if tipo_descarga == "CSV Completo":
+                csv_res = df_res.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label="Descargar Dataset Completo (CSV)",
+                    data=csv_res,
+                    file_name="resultados_zodiacal_clustering.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+            else:
+                output = io.BytesIO()
+                with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                    if "Cuantitativo" in tipo_descarga:
+                        cols_cuant = ["id", "edad"] + [f"p{i}" for i in range(1, 16)]
+                        if "Cluster" in df_res.columns:
+                            cols_cuant.append("Cluster")
+                        cols_export = [c for c in cols_cuant if c in df_res.columns]
+                        df_res[cols_export].to_excel(writer, index=False, sheet_name="Cuantitativo")
+                        file_name = "resultados_cuantitativos.xlsx"
+                    else:
+                        cols_cual = ["id", "genero", "signo"] + [f"p{i}a" for i in range(1, 16)]
+                        if "Polaridad_Sentimiento_Promedio" in df_res.columns:
+                            cols_cual.append("Polaridad_Sentimiento_Promedio")
+                        if "Cluster" in df_res.columns:
+                            cols_cual.append("Cluster")
+                        cols_export = [c for c in cols_cual if c in df_res.columns]
+                        df_res[cols_export].to_excel(writer, index=False, sheet_name="Cualitativo")
+                        file_name = "resultados_cualitativos.xlsx"
+                        
+                excel_data = output.getvalue()
+                st.download_button(
+                    label=f"Descargar {tipo_descarga} (Excel)",
+                    data=excel_data,
+                    file_name=file_name,
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True
+                )
         else:
             st.info("No se han generado resultados aún.")
             
