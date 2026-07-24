@@ -590,7 +590,7 @@ elif pantalla == "7. Zona de Descargas":
             
     with col2:
         st.markdown("### Reporte Estadístico Ejecutivo")
-        st.write("Descarga un informe profesional en PDF (incluye logo y tablas de resultados) listo para presentar.")
+        st.write("Descarga un informe profesional en PDF con análisis detallado.")
         
         if st.session_state.df_results is not None:
             df = st.session_state.df_results
