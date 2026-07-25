@@ -177,7 +177,7 @@ if "features_used" not in st.session_state:
 
 # Título y Subtítulo
 st.markdown('<div class="main-title">🔮 Zodiacal Clustering Pipeline</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Unidad IV: Análisis No Supervisado • Base de Datos local PostgreSQL (zodiac)</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Extracción de Conocimiento en Base de Datos • Unidad IV: Análisis No Supervisado</div>', unsafe_allow_html=True)
 
 # Menú de Navegación Lateral (7 Pantallas)
 st.sidebar.image("static/logo.png", use_container_width=True)
@@ -196,8 +196,8 @@ pantalla = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Base de Datos:** PostgreSQL (zodiac)")
-st.sidebar.markdown("**Estudiante:** Ing. en Desarrollo y Gestión de Software")
+st.sidebar.markdown("**Universidad Tecnológica del Norte de Guanajuato**")
+st.sidebar.markdown("**Ingeniería en Desarrollo y Gestión de Software**")
 
 # Intentar cargar datos de PostgreSQL si existen al inicio
 try:
