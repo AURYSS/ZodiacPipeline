@@ -224,7 +224,7 @@ if pantalla == "1. Ingesta de Datos":
             df, msg = load_and_validate_csv(uploaded_file)
             if df is not None:
                 st.success(f"¡Carga en memoria exitosa! {msg}")
-                if st.button("Guardar e Ingestar en PostgreSQL", use_container_width=True):
+                if st.button("Guardar e Ingestar", use_container_width=True):
                     try:
                         cant = insertar_encuestas(df)
                         st.success(f"¡Persistencia exitosa! Se insertaron {cant} registros en la base de datos local.")
@@ -258,7 +258,7 @@ if pantalla == "1. Ingesta de Datos":
             else:
                 st.error("No se encontró el dataset en 'data/datos_prueba_zodiac.csv'.")
                 
-        if st.button("Vaciar Tabla 'encuestas' en PostgreSQL", use_container_width=True):
+        if st.button("Vaciar Tabla 'encuestas' ", use_container_width=True):
             try:
                 limpiar_base_de_datos()
                 st.session_state.df_raw = None
