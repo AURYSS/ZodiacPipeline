@@ -248,7 +248,7 @@ if pantalla == "1. Ingesta de Datos":
                 st.error(f"Error de Validación: {msg}")
                 
     with col2:
-        st.markdown("### Acciones Demo & BD")
+        st.markdown("### Acciones Demo")
         if st.button("Cargar y Guardar Dataset de Prueba (5000 registros)", use_container_width=True):
             path_demo = os.path.join(os.path.dirname(__file__), "data", "datos_prueba_zodiac.csv")
             if os.path.exists(path_demo):
