@@ -290,7 +290,7 @@ if pantalla == "1. Ingesta de Datos":
 # PANTALLA 2: VISUALIZAR DATOS
 # ==============================================================================
 elif pantalla == "2. Visualizar Datos":
-    st.markdown('<div class="section-header">2. Consulta Tabular de PostgreSQL</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">2. Consulta Tabular</div>', unsafe_allow_html=True)
     
     # Intentar recargar desde la BD
     try:
@@ -301,7 +301,7 @@ elif pantalla == "2. Visualizar Datos":
     if st.session_state.df_raw is None or st.session_state.df_raw.empty:
         st.warning("La base de datos está vacía. Ingeste datos en la pestaña '1. Ingesta de Datos'.")
     else:
-        st.write("Vista de los registros directo de la base de datos PostgreSQL:")
+        st.write("Vista de los registros:")
         
         records_per_page = st.selectbox("Registros por página", [10, 25, 50, 100], index=0)
         total_len = len(st.session_state.df_raw)
