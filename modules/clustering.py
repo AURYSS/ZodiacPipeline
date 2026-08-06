@@ -79,19 +79,21 @@ def apply_pca_reduction(df_features, n_components=3):
     
     return df_pca, explained_variance
 
-def save_model(model, algorithm_name):
+def save_model(model, algorithm_name, elemento_name=None):
     """
     Guarda el modelo entrenado en formato .pkl.
     """
-    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}.pkl")
+    suffix = f"_{elemento_name.lower()}" if elemento_name else ""
+    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}{suffix}.pkl")
     joblib.dump(model, file_path)
     return file_path
 
-def load_model(algorithm_name):
+def load_model(algorithm_name, elemento_name=None):
     """
     Carga el modelo guardado.
     """
-    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}.pkl")
+    suffix = f"_{elemento_name.lower()}" if elemento_name else ""
+    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}{suffix}.pkl")
     if os.path.exists(file_path):
         return joblib.load(file_path)
     return None

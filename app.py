@@ -33,6 +33,14 @@ from modules.visualizations import (
 )
 from modules.report_generator import generate_pdf_report
 
+# Mapeo robusto global de signos a sus elementos correspondientes
+SIGN_TO_ELEMENT = {
+    "Aries": "Fuego", "Leo": "Fuego", "Sagitario": "Fuego", "Fuego": "Fuego",
+    "Tauro": "Tierra", "Virgo": "Tierra", "Capricornio": "Tierra", "Tierra": "Tierra",
+    "Géminis": "Aire", "Libra": "Aire", "Acuario": "Aire", "Aire": "Aire",
+    "Cáncer": "Agua", "Escorpio": "Agua", "Piscis": "Agua", "Agua": "Agua"
+}
+
 # Configuración de página de Streamlit
 st.set_page_config(
     page_title="AI.Studio - Zodiacal Clustering Pipeline",
@@ -414,59 +422,76 @@ elif pantalla == "5. Entrenar Modelo":
             
             params = {}
             if algo == "K-Means":
-                params["n_clusters"] = st.slider("Número de Clústeres (K):", 2, 12, 4)
+                params["n_clusters"] = st.slider("Número de Clústeres (K) por Elemento:", 2, 8, 3)
             elif algo == "DBSCAN":
-                params["eps"] = st.slider("Epsilon (Eps):", 0.1, 5.0, 1.5, step=0.1)
+                params["eps"] = st.slider("Epsilon (Eps):", 0.1, 5.0, 0.8, step=0.1)
                 params["min_samples"] = st.slider("Mínimo de Muestras (min_samples):", 2, 15, 5)
             elif algo == "Gaussian Mixture Models (GMM)":
-                params["n_components"] = st.slider("Número de Componentes:", 2, 12, 4)
+                params["n_components"] = st.slider("Número de Componentes:", 2, 8, 3)
                 
             normalize = st.checkbox("Normalizar Características mediante Min-Max Manual", value=True)
             
         with col2:
-            st.markdown("### Selección de Características (Features)")
-            st.write("Seleccione qué preguntas Likert usar para el entrenamiento (El signo zodiacal está excluido):")
+            st.markdown("### Arquitectura de Submodelos Segmentados")
+            st.info("💡 **Solución al Sesgo de Nulos**: Se entrenarán 4 submodelos independientes en paralelo (uno por cada elemento). Cada modelo usará únicamente las 3 preguntas correspondientes a su elemento (Fuego: p1-p3, Agua: p4-p6, Aire: p7-p9, Tierra: p10-p12), eliminando la necesidad de imputar valores en las preguntas que el usuario no contestó.")
             
-            likert_cols = [f"p{i}" for i in range(1, 16)]
-            selected_features = []
-            for col in likert_cols:
-                if st.checkbox(f"Pregunta {col} (Likert)", value=True, key=f"feat_{col}"):
-                    selected_features.append(col)
-                    
         if st.button("Iniciar Aprendizaje de IA", use_container_width=True):
-            if len(selected_features) == 0:
-                st.error("Debe seleccionar al menos una característica numérica para entrenar.")
-            else:
-                df_feat = df[selected_features].copy()
+            algo_key = "kmeans" if algo == "K-Means" else "dbscan" if algo == "DBSCAN" else "gmm"
+            
+            elementos_vars = {
+                "Fuego": ["p1", "p2", "p3"],
+                "Agua": ["p4", "p5", "p6"],
+                "Aire": ["p7", "p8", "p9"],
+                "Tierra": ["p10", "p11", "p12"]
+            }
+            
+            all_metrics = {}
+            df_res = df.copy()
+            df_res["Cluster"] = -1  # Inicializar
+            modelos_paths = {}
+            
+            # Mapear signos a elementos para filtrar
+            df["elemento_temp"] = df["signo"].map(SIGN_TO_ELEMENT)
+            for elem, features in elementos_vars.items():
+                df_elem_indices = df[df["elemento_temp"] == elem].index
+                df_elem = df.loc[df_elem_indices].copy()
                 
-                if normalize:
-                    df_feat = normalizacion_min_max_manual(df_feat, selected_features)
+                if len(df_elem) == 0:
+                    continue
                     
-                algo_key = "kmeans" if algo == "K-Means" else "dbscan" if algo == "DBSCAN" else "gmm"
+                df_feat = df_elem[features].copy()
+                if normalize:
+                    df_feat = normalizacion_min_max_manual(df_feat, features)
+                    
                 model, labels, metrics = train_clustering_model(df_feat, algo_key, params)
                 
-                st.session_state.features_used = selected_features
-                st.session_state.last_algorithm = algo_key
-                st.session_state.model_metrics = metrics
+                # Asignar etiquetas a la fila correspondiente
+                df_res.loc[df_elem_indices, "Cluster"] = labels
                 
-                df_res = df.copy()
-                df_res["Cluster"] = labels
-                st.session_state.df_results = df_res
+                # Guardar modelo
+                saved_path = save_model(model, algo_key, elem)
+                modelos_paths[elem] = saved_path
+                all_metrics[elem] = metrics
                 
-                saved_path = save_model(model, algo_key)
-                st.session_state.last_model_path = saved_path
-                
-                st.success(f"¡Modelo {algo} entrenado y guardado con éxito!")
-                
-                st.markdown("### Métricas de Evaluación del Modelo")
-                m1, m2 = st.columns(2)
-                with m1:
-                    st.metric("Silhouette Score (Silueta)", f"{metrics.get('Silhouette Score', 0.0):.4f}")
-                with m2:
+            st.session_state.last_algorithm = algo_key
+            st.session_state.df_results = df_res
+            st.session_state.model_metrics = all_metrics
+            st.session_state.last_model_path = list(modelos_paths.values())[0] if modelos_paths else None
+            st.session_state.modelos_paths_dict = modelos_paths
+            
+            st.success(f"¡Los 4 submodelos de {algo} fueron entrenados y guardados con éxito!")
+            
+            st.markdown("### Métricas de Evaluación por Elemento")
+            c1, c2, c3, c4 = st.columns(4)
+            cols_elem = [c1, c2, c3, c4]
+            for idx, (elem, metrics) in enumerate(all_metrics.items()):
+                with cols_elem[idx]:
+                    st.markdown(f"**Elemento {elem}**")
+                    st.metric("Silhouette Score", f"{metrics.get('Silhouette Score', 0.0):.4f}")
                     if "Inertia" in metrics:
-                        st.metric("Inertia (Inercia)", f"{metrics.get('Inertia', 0.0):.2f}")
+                        st.metric("Inercia (Inertia)", f"{metrics.get('Inertia', 0.0):.2f}")
                     elif "Noise points" in metrics:
-                        st.metric("Puntos de ruido (Outliers)", f"{metrics.get('Noise points', 0)}")
+                        st.metric("Puntos de ruido", f"{metrics.get('Noise points', 0)}")
                     elif "BIC" in metrics:
                         st.metric("BIC Score", f"{metrics.get('BIC', 0.0):.2f}")
 
@@ -480,36 +505,61 @@ elif pantalla == "6. Resultados de IA & NLP":
         st.warning("No hay resultados de entrenamiento. Por favor entrene un modelo primero.")
     else:
         df_res = st.session_state.df_results.copy()
-        features = st.session_state.features_used
         
-        df_feat = df_res[features].copy()
-        df_pca, variance = apply_pca_reduction(df_feat, n_components=3)
+        # Selector de Elemento para Visualizar
+        st.markdown("### Visualización por Elemento Astrológico")
+        elem_visualizar = st.selectbox(
+            "Seleccione el elemento para visualizar su agrupamiento y análisis independiente:",
+            ["Fuego", "Agua", "Aire", "Tierra"]
+        )
         
-        st.markdown("### Visualización PCA 2D y 3D")
-        st.write(f"Varianza explicada acumulada (PC1 + PC2 + PC3): **{sum(variance)*100:.2f}%**")
+        # Filtrar datos de este elemento robustamente
+        df_res["elemento_temp"] = df_res["signo"].map(SIGN_TO_ELEMENT)
+        df_elem = df_res[df_res["elemento_temp"] == elem_visualizar].copy()
         
-        col1, col2 = st.columns(2)
-        with col1:
-            st.plotly_chart(plot_pca_2d(df_pca, df_res["Cluster"], hover_data=df_res[["id", "edad", "signo", "genero"]]), use_container_width=True)
-        with col2:
-            st.plotly_chart(plot_pca_3d(df_pca, df_res["Cluster"], hover_data=df_res[["id", "edad", "signo", "genero"]]), use_container_width=True)
+        if df_elem.empty:
+            st.warning(f"No hay registros cargados para el elemento {elem_visualizar}.")
+        else:
+            elementos_vars = {
+                "Fuego": ["p1", "p2", "p3"],
+                "Agua": ["p4", "p5", "p6"],
+                "Aire": ["p7", "p8", "p9"],
+                "Tierra": ["p10", "p11", "p12"]
+            }
+            features = elementos_vars[elem_visualizar]
             
-        st.markdown("### Validación: Comparativa de Clústeres contra Signo Zodiacal")
-        st.plotly_chart(plot_distribucion_signos_cluster(df_res), use_container_width=True)
-        
-        st.markdown("### Análisis Cualitativo NLP de Preguntas Abiertas")
-        open_cols = [f"p{i}a" for i in range(1, 16)]
-        selected_nlp_cols = st.multiselect("Seleccione preguntas abiertas para analizar:", open_cols, default=["p1a", "p2a", "p3a"])
-        
-        if selected_nlp_cols:
-            df_sent = analizar_sentimientos_dataset(df_res, selected_nlp_cols)
-            df_res["Polaridad_Sentimiento_Promedio"] = df_sent["sentimiento_promedio"]
+            df_feat = df_elem[features].copy()
+            df_pca, variance = apply_pca_reduction(df_feat, n_components=3)
             
-            st.write("Polaridad promedio de sentimiento asignada por persona (1.0 = Positivo, -1.0 = Negativo):")
-            st.dataframe(df_res[["id", "signo", "Cluster", "Polaridad_Sentimiento_Promedio"] + selected_nlp_cols].head(15), use_container_width=True)
+            st.write(f"Visualización de los sub-clústeres del elemento **{elem_visualizar}** entrenados en base a: `{features}`")
+            st.write(f"Varianza explicada acumulada (PC1 + PC2 + PC3): **{sum(variance)*100:.2f}%**")
             
-            st.write("Términos más significativos descubiertos en respuestas abiertas (TF-IDF):")
-            df_tfidf = obtener_terminos_frecuentes_tfidf(df_res, selected_nlp_cols)
+            col1, col2 = st.columns(2)
+            with col1:
+                st.plotly_chart(plot_pca_2d(df_pca, df_elem["Cluster"], hover_data=df_elem[["id", "edad", "genero"]]), use_container_width=True)
+            with col2:
+                st.plotly_chart(plot_pca_3d(df_pca, df_elem["Cluster"], hover_data=df_elem[["id", "edad", "genero"]]), use_container_width=True)
+                
+            # NLP Cualitativo específico del elemento
+            st.markdown(f"### Análisis Cualitativo NLP: Respuestas de {elem_visualizar}")
+            
+            # Columnas abiertas específicas para el elemento
+            open_cols_mapping = {
+                "Fuego": ["p1a", "p2a", "p3a"],
+                "Agua": ["p4a", "p5a", "p6a"],
+                "Aire": ["p7a", "p8a", "p9a"],
+                "Tierra": ["p10a", "p11a", "p12a"]
+            }
+            nlp_cols = open_cols_mapping[elem_visualizar]
+            
+            df_sent = analizar_sentimientos_dataset(df_elem, nlp_cols)
+            df_elem["Polaridad_Sentimiento_Promedio"] = df_sent["sentimiento_promedio"]
+            
+            st.write("Polaridad promedio de sentimiento por participante (1.0 = Positivo, -1.0 = Negativo):")
+            st.dataframe(df_elem[["id", "Cluster", "Polaridad_Sentimiento_Promedio"] + nlp_cols].head(15), use_container_width=True)
+            
+            st.write(f"Términos más recurrentes descubiertos en las respuestas abiertas de **{elem_visualizar}** (TF-IDF):")
+            df_tfidf = obtener_terminos_frecuentes_tfidf(df_elem, nlp_cols)
             st.dataframe(df_tfidf, use_container_width=True)
 
 # ==============================================================================
@@ -535,22 +585,29 @@ elif pantalla == "7. Zona de Descargas":
             st.info("No se han generado resultados aún.")
             
         st.markdown("### Descargar Modelo de Entrenamiento (.pkl)")
-        if st.session_state.last_model_path is not None and os.path.exists(st.session_state.last_model_path):
-            with open(st.session_state.last_model_path, "rb") as f:
-                model_bytes = f.read()
-            st.download_button(
-                label="Descargar Modelo Entrenado (.pkl)",
-                data=model_bytes,
-                file_name=os.path.basename(st.session_state.last_model_path),
-                mime="application/octet-stream",
-                use_container_width=True
+        if "modelos_paths_dict" in st.session_state and st.session_state.modelos_paths_dict:
+            # Selector de elemento para descargar el modelo
+            elem_descargar = st.selectbox(
+                "Seleccione el modelo del elemento a descargar (.pkl):",
+                list(st.session_state.modelos_paths_dict.keys())
             )
+            path_modelo = st.session_state.modelos_paths_dict[elem_descargar]
+            if os.path.exists(path_modelo):
+                with open(path_modelo, "rb") as f:
+                    model_bytes = f.read()
+                st.download_button(
+                    label=f"Descargar Modelo de {elem_descargar} (.pkl)",
+                    data=model_bytes,
+                    file_name=os.path.basename(path_modelo),
+                    mime="application/octet-stream",
+                    use_container_width=True
+                )
         else:
             st.info("No hay ningún modelo entrenado guardado.")
             
     with col2:
         st.markdown("### Reporte Estadístico Ejecutivo")
-        st.write("Descarga un informe profesional en PDF (incluye logo y tablas de resultados) listo para presentar.")
+        st.write("Descarga un informe profesional en PDF listo para presentar.")
         
         if st.session_state.df_results is not None:
             df = st.session_state.df_results
@@ -562,22 +619,21 @@ elif pantalla == "7. Zona de Descargas":
             # Generar gráficos en PNG usando Kaleido para inyectar en el PDF
             graphs_bytes = []
             try:
-                features = st.session_state.get('features_used', [])
-                if features:
-                    df_feat = df[features].copy()
+                features = ["p1", "p2", "p3"] # Fuego por defecto
+                df_feat = df[df["signo"].map(SIGN_TO_ELEMENT) == "Fuego"][features].copy()
+                if not df_feat.empty:
                     df_pca, _ = apply_pca_reduction(df_feat, n_components=2)
-                    labels = df["Cluster"]
+                    labels = df[df["signo"].map(SIGN_TO_ELEMENT) == "Fuego"]["Cluster"]
                     
                     fig1 = plot_pca_2d(df_pca, labels)
                     graphs_bytes.append(fig1.to_image(format="png", width=800, height=600))
-                    
-                    fig2 = plot_distribucion_signos_cluster(df)
-                    graphs_bytes.append(fig2.to_image(format="png", width=800, height=600))
             except Exception as e:
                 st.error(f"Ocurrió un error al generar las gráficas para el PDF: {str(e)}")
             
-            # Generar PDF y forzar conversión a bytes puro para Streamlit
-            pdf_bytes = bytes(generate_pdf_report(algo, metrics, cluster_counts, graphs_bytes))
+            # Obtener el primer set de métricas si es un diccionario
+            pdf_metrics = list(metrics.values())[0] if isinstance(metrics, dict) else metrics
+            
+            pdf_bytes = bytes(generate_pdf_report(algo, pdf_metrics, cluster_counts, graphs_bytes))
             
             st.download_button(
                 label="📥 Descargar Reporte (PDF)",
