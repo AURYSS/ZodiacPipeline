@@ -18,7 +18,9 @@ def train_clustering_model(df_features, algorithm="kmeans", params=None):
     if params is None:
         params = {}
         
-    X = df_features.values
+    # Imputar valores nulos con 3 (Neutral) antes de entrenar en sklearn
+    df_filled = df_features.fillna(3)
+    X = df_filled.values
     metrics = {}
     model = None
     labels = []
@@ -67,7 +69,9 @@ def apply_pca_reduction(df_features, n_components=3):
     Retorna un DataFrame con los componentes.
     """
     pca = PCA(n_components=n_components, random_state=42)
-    X_pca = pca.fit_transform(df_features)
+    # Imputar nulos con 3 (Neutral) antes de entrenar PCA
+    df_filled = df_features.fillna(3)
+    X_pca = pca.fit_transform(df_filled)
     
     cols = [f"PC{i+1}" for i in range(n_components)]
     df_pca = pd.DataFrame(X_pca, columns=cols, index=df_features.index)
@@ -75,19 +79,21 @@ def apply_pca_reduction(df_features, n_components=3):
     
     return df_pca, explained_variance
 
-def save_model(model, algorithm_name):
+def save_model(model, algorithm_name, elemento_name=None):
     """
     Guarda el modelo entrenado en formato .pkl.
     """
-    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}.pkl")
+    suffix = f"_{elemento_name.lower()}" if elemento_name else ""
+    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}{suffix}.pkl")
     joblib.dump(model, file_path)
     return file_path
 
-def load_model(algorithm_name):
+def load_model(algorithm_name, elemento_name=None):
     """
     Carga el modelo guardado.
     """
-    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}.pkl")
+    suffix = f"_{elemento_name.lower()}" if elemento_name else ""
+    file_path = os.path.join(MODELS_DIR, f"modelo_{algorithm_name}{suffix}.pkl")
     if os.path.exists(file_path):
         return joblib.load(file_path)
     return None
