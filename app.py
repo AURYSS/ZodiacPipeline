@@ -272,7 +272,7 @@ if pantalla == "1. Ingesta de Datos":
                 st.session_state.df_raw = None
                 st.session_state.df_filtered = None
                 st.session_state.df_results = None
-                st.success("Tabla vaciada con éxito en PostgreSQL.")
+                st.success("Tabla vaciada con éxito.")
             except Exception as e:
                 st.error(f"Error de base de datos: {e}")
                 
