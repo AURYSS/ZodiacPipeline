@@ -220,7 +220,7 @@ except Exception as e:
 # PANTALLA 1: INGESTA DE DATOS
 # ==============================================================================
 if pantalla == "1. Ingesta de Datos":
-    st.markdown('<div class="section-header">1. Ingesta y Persistencia en PostgreSQL</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">1. Ingesta y Persistencia</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
