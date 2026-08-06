@@ -18,7 +18,9 @@ def train_clustering_model(df_features, algorithm="kmeans", params=None):
     if params is None:
         params = {}
         
-    X = df_features.values
+    # Imputar valores nulos con 3 (Neutral) antes de entrenar en sklearn
+    df_filled = df_features.fillna(3)
+    X = df_filled.values
     metrics = {}
     model = None
     labels = []
@@ -67,7 +69,9 @@ def apply_pca_reduction(df_features, n_components=3):
     Retorna un DataFrame con los componentes.
     """
     pca = PCA(n_components=n_components, random_state=42)
-    X_pca = pca.fit_transform(df_features)
+    # Imputar nulos con 3 (Neutral) antes de entrenar PCA
+    df_filled = df_features.fillna(3)
+    X_pca = pca.fit_transform(df_filled)
     
     cols = [f"PC{i+1}" for i in range(n_components)]
     df_pca = pd.DataFrame(X_pca, columns=cols, index=df_features.index)

@@ -1,37 +1,3 @@
-# 📊 Evidencia de Generación del Dataset Masivo (5,000 Registros)
-
-Para entrenar y evaluar con éxito los modelos de clustering y las funciones NLP sin depender de encuestas reales sesgadas o incompletas, se diseñó un **Script Generador de Datos Sintéticos** en Python. 
-
-Este script genera **5,000 registros coherentes**, estructurando datos demográficos, respuestas numéricas tipo Likert (`p1`-`p15`) y texto libre en español (`p1a`-`p15a`).
-
----
-
-## 🧠 1. Lógica del Algoritmo de Generación (Con Ramificación Real)
-
-Para que el dataset sintético sea 100% fiel al comportamiento real del formulario de Google Forms (el cual tiene ramificaciones condicionales), el generador implementa la siguiente lógica:
-
-### A. Clasificación de Signos por Elemento:
-*   🔥 **Fuego** (Aries, Leo, Sagitario)
-*   ⛰️ **Tierra** (Tauro, Virgo, Capricornio)
-*   🌬️ **Aire** (Géminis, Libra, Acuario)
-*   💧 **Agua** (Cáncer, Escorpio, Piscis)
-
-### B. Distribución Condicionada y Relleno de Respuestas Likert (1 a 5):
-*   Si el sujeto es de **Fuego**: Solo se responden las preguntas `p1`, `p2`, `p3` con valores sesgados altos ($3$, $4$ o $5$). Las preguntas `p4` a `p15` se dejan vacías (`None` / `NULL`).
-*   Si el sujeto es de **Agua**: Solo se responden las preguntas `p4`, `p5`, `p6`. Las demás se dejan vacías.
-*   Si el sujeto es de **Aire**: Solo se responden las preguntas `p7`, `p8`, `p9`. Las demás se dejan vacías.
-*   Si el sujeto es de **Tierra**: Solo se responden las preguntas `p10`, `p11`, `p12`. Las demás se dejan vacías.
-
-### C. Generación Semántica de Texto Libre (Respuestas Abiertas):
-Se aplica la misma lógica de ramificación: solo se rellena el texto de las 3 preguntas abiertas correspondientes al elemento del sujeto astrológico utilizando plantillas en español (ej. *"apasionado"*, *"ordenado"*, *"curioso"*, *"nostálgico"*). Las otras 12 columnas abiertas se dejan vacías (`None` / `NULL`).
-
----
-
-## 💻 2. Código del Script Generador (`generate_massive_data.py`)
-
-A continuación se muestra el código completo en Python utilizado para fabricar la base de datos de prueba (`data/datos_prueba_zodiac.csv`):
-
-```python
 import pandas as pd
 import numpy as np
 import os
@@ -145,10 +111,3 @@ if __name__ == "__main__":
     os.makedirs("data", exist_ok=True)
     df_prueba.to_csv("data/datos_prueba_zodiac.csv", index=False)
     print("¡Dataset de 5,000 registros con estructura ramificada generado en 'data/datos_prueba_zodiac.csv'!")
-```
-
----
-
-## 📈 3. ¿Por qué es evidencia válida?
-1.  **Fidelidad de Estructura**: Replica exactamente el comportamiento de ramificación del Google Form real donde solo se contestan las preguntas del elemento activo.
-2.  **Validación del Pipeline**: Permite probar que el cargador de datos y los modelos de agrupamiento son capaces de lidiar con columnas predominantemente nulas usando estrategias de imputación o rellenado dinámico sin romperse.

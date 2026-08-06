@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import pandas as pd
+import numpy as np
 from psycopg2.extras import execute_values
 
 # Parámetros de conexión a la base de datos PostgreSQL local
@@ -63,8 +64,10 @@ def insertar_encuestas(df):
     cols_open = [f"p{i}a" for i in range(1, 16)]
     columnas_ordenadas = ["edad", "genero", "signo"] + cols_likert + cols_open
     
-    # Preparar datos
-    datos_insercion = df[columnas_ordenadas].values.tolist()
+    # Preparar datos: convertir NaN a None para evitar errores de tipo float nan en Postgres
+    df_clean = df[columnas_ordenadas].copy()
+    df_clean = df_clean.astype(object).where(pd.notnull(df_clean), None)
+    datos_insercion = df_clean.values.tolist()
     
     # Consulta de inserción masiva
     cols_str = ", ".join(columnas_ordenadas)
