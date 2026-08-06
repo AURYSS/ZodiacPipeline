@@ -628,7 +628,7 @@ elif pantalla == "7. Zona de Descargas":
                     fig1 = plot_pca_2d(df_pca, labels)
                     graphs_bytes.append(fig1.to_image(format="png", width=800, height=600))
             except Exception as e:
-                st.error(f"Ocurrió un error al generar las gráficas para el PDF: {str(e)}")
+                st.warning("⚠️ Nota: Las gráficas de dispersión no se incluirán en el PDF generado debido a la falta de Google Chrome / dependencias de Kaleido en este entorno local. El reporte con tablas de métricas y frecuencias se descargará con normalidad.")
             
             # Obtener el primer set de métricas si es un diccionario
             pdf_metrics = list(metrics.values())[0] if isinstance(metrics, dict) else metrics
