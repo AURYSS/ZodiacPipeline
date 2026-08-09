@@ -4,6 +4,9 @@ import numpy as np
 import io
 import os
 import joblib
+import plotly.express as px
+import plotly.graph_objects as go
+import importlib
 
 # Importar módulos locales
 from modules.data_loader import load_and_validate_csv
@@ -19,7 +22,15 @@ from modules.statistics import (
     calcular_varianza_manual,
     calcular_desviacion_estandar_manual,
     normalizacion_min_max_manual,
-    calcular_promedios_dimensiones
+    calcular_promedios_dimensiones,
+    calcular_minimo_manual,
+    calcular_maximo_manual,
+    calcular_rango_manual,
+    calcular_k_sturges,
+    calcular_amplitud_manual,
+    calcular_mediana_manual,
+    calcular_cv_manual,
+    generar_tabla_frecuencias_manual
 )
 from modules.clustering import train_clustering_model, apply_pca_reduction, save_model, MODELS_DIR
 from modules.nlp import analizar_sentimientos_dataset, obtener_terminos_frecuentes_tfidf
@@ -29,9 +40,15 @@ from modules.visualizations import (
     plot_distribucion_signos_cluster,
     plot_perfil_clusters,
     plot_distribucion_signo,
-    plot_matriz_correlacion
+    plot_matriz_correlacion,
+    plot_histograma_poligono,
+    plot_metodo_codo
 )
 from modules.report_generator import generate_pdf_report
+from generate_massive_data import generar_dataset
+import modules.history
+importlib.reload(modules.history)
+from modules.history import log_model_training, get_model_history
 
 # Mapeo robusto global de signos a sus elementos correspondientes
 SIGN_TO_ELEMENT = {
@@ -199,7 +216,8 @@ pantalla = st.sidebar.radio(
         "4. Estadísticas Básicas",
         "5. Entrenar Modelo",
         "6. Resultados de IA & NLP",
-        "7. Zona de Descargas"
+        "7. Zona de Descargas",
+        "8. Historial de Modelos"
     ]
 )
 
@@ -248,11 +266,14 @@ if pantalla == "1. Ingesta de Datos":
                 st.error(f"Error de Validación: {msg}")
                 
     with col2:
-        st.markdown("### Acciones Demo")
-        if st.button("Cargar y Guardar Dataset de Prueba (5000 registros)", use_container_width=True):
-            path_demo = os.path.join(os.path.dirname(__file__), "data", "datos_prueba_zodiac.csv")
-            if os.path.exists(path_demo):
-                df_demo = pd.read_csv(path_demo)
+        st.markdown("### Acciones Demo / Sintéticas")
+        
+        # Generador de datos sintéticos a medida
+        n_synthetic = st.number_input("Cantidad de registros sintéticos a generar:", min_value=1, max_value=50000, value=5000, step=500)
+        
+        if st.button(f"Generar {n_synthetic} registros sintéticos", use_container_width=True):
+            with st.spinner(f"Generando {n_synthetic} registros..."):
+                df_demo = generar_dataset(n_synthetic)
                 try:
                     cant = insertar_encuestas(df_demo)
                     st.success(f"¡Éxito! {cant} registros insertados en Postgres.")
@@ -263,8 +284,6 @@ if pantalla == "1. Ingesta de Datos":
                         st.error("Error de conexión: El servidor PostgreSQL local rechazó la conexión. Verifica tu contraseña y que la base de datos 'zodiac' exista.")
                     else:
                         st.error(f"Error de conexión a Postgres: {e}")
-            else:
-                st.error("No se encontró el dataset en 'data/datos_prueba_zodiac.csv'.")
                 
         if st.button("Vaciar Tabla 'encuestas' ", use_container_width=True):
             try:
@@ -375,34 +394,111 @@ elif pantalla == "4. Estadísticas Básicas":
         st.warning("No hay registros filtrados o la base de datos está vacía.")
     else:
         df = st.session_state.df_filtered.copy()
-        likert_cols = [f"p{i}" for i in range(1, 16)]
         
-        st.markdown("### Métricas de Rúbrica de Evaluación por Pregunta (Likert)")
+        st.markdown("### Métricas de Rúbrica de Evaluación por Dimensión (Elemento)")
         st.write("Calculados usando **funciones manuales programadas paso a paso** (Rúbrica de evaluación):")
         
+        # Obtener puntuaciones promedio por dimensión (Fuego, Tierra, Aire, Agua)
+        df_dimensiones = calcular_promedios_dimensiones(df)
+        
         stat_rows = []
-        for col in likert_cols:
-            val_col = df[col].tolist()
+        for dim_name in df_dimensiones.columns:
+            val_col = df_dimensiones[dim_name].tolist()
+            
             promedio = calcular_promedio_manual(val_col)
             moda = calcular_moda_manual(val_col)
+            mediana = calcular_mediana_manual(val_col)
             varianza = calcular_varianza_manual(val_col)
             std_dev = calcular_desviacion_estandar_manual(val_col)
+            cv = calcular_cv_manual(val_col)
+            
+            minimo = calcular_minimo_manual(val_col)
+            maximo = calcular_maximo_manual(val_col)
+            rango = calcular_rango_manual(val_col)
+            k_sturges = calcular_k_sturges(len(val_col))
+            amplitud = calcular_amplitud_manual(rango, k_sturges)
+            
             stat_rows.append({
-                "Pregunta": col,
-                "Promedio (Manual)": round(promedio, 3),
-                "Moda (Manual)": moda,
-                "Varianza (Manual)": round(varianza, 3),
-                "Desviación Estándar (Manual)": round(std_dev, 3)
+                "Elemento/Dimensión": dim_name,
+                "Promedio": round(promedio, 3) if promedio is not None else None,
+                "Moda": round(moda, 3) if isinstance(moda, float) else moda,
+                "Mediana (Me)": round(mediana, 3) if mediana is not None else None,
+                "Varianza": round(varianza, 3) if varianza is not None else None,
+                "Desviación Est.": round(std_dev, 3) if std_dev is not None else None,
+                "CV (%)": round(cv, 2) if cv is not None else None,
+                "Rango": round(rango, 3) if rango is not None else None,
+                "Amplitud": round(amplitud, 3) if amplitud is not None else None,
+                "K (Sturges)": round(k_sturges, 3)
             })
             
         st.table(pd.DataFrame(stat_rows))
         
-        st.markdown("### Visualización de Variables Demográficas")
+        st.markdown("---")
+        st.markdown("### 📊 Análisis de Frecuencias por Dimensión (Escolar)")
+        st.write("Selecciona una dimensión para desplegar su **Tabla de Distribución de Frecuencias** y métricas manuales de control.")
+        
+        dim_seleccionada = st.selectbox("Seleccione el elemento a visualizar detalladamente:", df_dimensiones.columns)
+        
+        # Filtramos la población basándonos en el elemento seleccionado
+        df_poblacion = df.copy()
+        if "Fuego" in dim_seleccionada:
+            df_poblacion = df_poblacion[df_poblacion["signo"].isin(["Aries", "Leo", "Sagitario"])]
+        elif "Tierra" in dim_seleccionada:
+            df_poblacion = df_poblacion[df_poblacion["signo"].isin(["Tauro", "Virgo", "Capricornio"])]
+        elif "Aire" in dim_seleccionada:
+            df_poblacion = df_poblacion[df_poblacion["signo"].isin(["Géminis", "Libra", "Acuario"])]
+        elif "Agua" in dim_seleccionada:
+            df_poblacion = df_poblacion[df_poblacion["signo"].isin(["Cáncer", "Escorpio", "Piscis"])]
+            
+        # Generar los promedios SOLO para esta población filtrada
+        df_dim_poblacion = calcular_promedios_dimensiones(df_poblacion)
+        
+        if df_dim_poblacion.empty:
+            st.warning("No hay suficientes datos de estos signos para generar la tabla.")
+            val_sel = []
+        else:
+            val_sel = df_dim_poblacion[dim_seleccionada].tolist()
+        
+        col_resumen, col_tabla = st.columns([1, 2])
+        
+        with col_resumen:
+            st.markdown("#### Métricas de Control")
+            rango_sel = calcular_rango_manual(val_sel)
+            k_sel = calcular_k_sturges(len(val_sel))
+            k_sel_int = int(round(k_sel)) if k_sel > 0 else 1
+            a_sel = calcular_amplitud_manual(rango_sel, k_sel_int)
+            
+            st.write(f"**Rango (R):** {calcular_maximo_manual(val_sel):.2f} - {calcular_minimo_manual(val_sel):.2f} = **{rango_sel:.2f}**")
+            st.write(f"**K (Intervalo):** 1 + 3.322 * log({len(val_sel)}) = **{k_sel:.3f}** (Usamos {k_sel_int})")
+            st.write(f"**A (Amplitud):** {rango_sel:.2f} / {k_sel_int} = **{a_sel:.3f}**")
+            st.markdown("---")
+            st.write(f"**Media (X̄):** {calcular_promedio_manual(val_sel):.2f}")
+            moda_val = calcular_moda_manual(val_sel)
+            st.write(f"**Mo (Moda):** {moda_val:.2f}" if isinstance(moda_val, float) else f"**Mo (Moda):** {moda_val}")
+            st.write(f"**Me (Mediana):** {calcular_mediana_manual(val_sel):.2f}")
+            st.markdown("---")
+            st.write(f"**Varianza (S²):** {calcular_varianza_manual(val_sel):.3f}")
+            st.write(f"**DesStd (S):** {calcular_desviacion_estandar_manual(val_sel):.3f}")
+            st.write(f"**CV:** {calcular_cv_manual(val_sel):.2f}%")
+            
+        with col_tabla:
+            st.markdown("#### Tabla de Distribución de Frecuencias")
+            df_freq = generar_tabla_frecuencias_manual(val_sel)
+            st.dataframe(df_freq, use_container_width=True)
+        
+        st.markdown("---")
+        st.markdown("### Visualización de Frecuencias y Distribuciones")
+        
         col_viz1, col_viz2 = st.columns(2)
+        
         with col_viz1:
-            st.plotly_chart(plot_distribucion_signo(df), use_container_width=True)
+            st.markdown("#### Histograma y Polígono de Frecuencias")
+            fig_hist = plot_histograma_poligono(df_dimensiones[dim_seleccionada], titulo=f"Histograma: {dim_seleccionada}")
+            st.plotly_chart(fig_hist, use_container_width=True)
+            
         with col_viz2:
-            st.plotly_chart(plot_matriz_correlacion(df[likert_cols]), use_container_width=True)
+            st.markdown("#### Porcentajes por Signo Zodiacal")
+            st.plotly_chart(plot_distribucion_signo(df), use_container_width=True)
 
 # ==============================================================================
 # PANTALLA 5: ENTRENAR MODELO
@@ -424,25 +520,55 @@ elif pantalla == "5. Entrenar Modelo":
         
         with col1:
             st.markdown("### Configuración de Algoritmo")
-            algo = st.selectbox("Algoritmo de Agrupamiento:", ["K-Means", "DBSCAN", "Gaussian Mixture Models (GMM)"])
+            algo = st.selectbox("Algoritmo de Agrupamiento:", ["K-Means"])
             
             params = {}
-            if algo == "K-Means":
-                params["n_clusters"] = st.slider("Número de Clústeres (K) por Elemento:", 2, 8, 3)
-            elif algo == "DBSCAN":
-                params["eps"] = st.slider("Epsilon (Eps):", 0.1, 5.0, 0.8, step=0.1)
-                params["min_samples"] = st.slider("Mínimo de Muestras (min_samples):", 2, 15, 5)
-            elif algo == "Gaussian Mixture Models (GMM)":
-                params["n_components"] = st.slider("Número de Componentes:", 2, 8, 3)
+            params["n_clusters"] = st.slider("Número de Clústeres (K) por Elemento:", 2, 8, 3)
                 
             normalize = st.checkbox("Normalizar Características mediante Min-Max Manual", value=True)
+            
+            st.markdown("---")
+            st.markdown("### Analizador del Método del Codo")
+            elem_codo = st.selectbox("Elemento para analizar (Codo):", ["Fuego", "Agua", "Aire", "Tierra"])
+            if st.button("Visualizar Método del Codo", use_container_width=True):
+                with st.spinner(f"Calculando inercias manuales para {elem_codo} (K=2 a K=8)..."):
+                    # Mapear signos a elementos
+                    df["elemento_temp"] = df["signo"].map(SIGN_TO_ELEMENT)
+                    df_elem = df[df["elemento_temp"] == elem_codo].copy()
+                    
+                    elementos_vars = {
+                        "Fuego": ["p1", "p2", "p3"],
+                        "Agua": ["p4", "p5", "p6"],
+                        "Aire": ["p7", "p8", "p9"],
+                        "Tierra": ["p10", "p11", "p12"]
+                    }
+                    features = elementos_vars[elem_codo]
+                    df_feat = df_elem[features].copy()
+                    if normalize:
+                        df_feat = normalizacion_min_max_manual(df_feat, features)
+                    
+                    k_values = list(range(2, 9))
+                    inercias = []
+                    for k in k_values:
+                        _, _, metrics = train_clustering_model(df_feat, "kmeans", {"n_clusters": k})
+                        inercias.append(metrics["Inertia (Manual)"])
+                        
+                    st.plotly_chart(plot_metodo_codo(k_values, inercias), use_container_width=True)
+
             
         with col2:
             st.markdown("### Arquitectura de Submodelos Segmentados")
             st.info("💡 **Solución al Sesgo de Nulos**: Se entrenarán 4 submodelos independientes en paralelo (uno por cada elemento). Cada modelo usará únicamente las 3 preguntas correspondientes a su elemento (Fuego: p1-p3, Agua: p4-p6, Aire: p7-p9, Tierra: p10-p12), eliminando la necesidad de imputar valores en las preguntas que el usuario no contestó.")
+            nombre_sesion = st.text_input("Nombre de esta sesión (Ej. Prueba K=3):", value="Mi Modelo")
             
         if st.button("Iniciar Aprendizaje de IA", use_container_width=True):
-            algo_key = "kmeans" if algo == "K-Means" else "dbscan" if algo == "DBSCAN" else "gmm"
+            if not nombre_sesion.strip():
+                st.error("Por favor, ingrese un nombre para la sesión.")
+                st.stop()
+                
+            from datetime import datetime
+            session_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            algo_key = "kmeans"
             
             elementos_vars = {
                 "Fuego": ["p1", "p2", "p3"],
@@ -479,6 +605,10 @@ elif pantalla == "5. Entrenar Modelo":
                 modelos_paths[elem] = saved_path
                 all_metrics[elem] = metrics
                 
+                # Guardar en el historial
+                k_val = params.get("n_clusters", 3)
+                log_model_training(nombre_sesion, algo_key, elem, k_val, metrics.get("Inertia (Manual)"), metrics.get("Silhouette Score (Manual)"), saved_path, timestamp=session_timestamp)
+                
             st.session_state.last_algorithm = algo_key
             st.session_state.df_results = df_res
             st.session_state.model_metrics = all_metrics
@@ -493,13 +623,9 @@ elif pantalla == "5. Entrenar Modelo":
             for idx, (elem, metrics) in enumerate(all_metrics.items()):
                 with cols_elem[idx]:
                     st.markdown(f"**Elemento {elem}**")
-                    st.metric("Silhouette Score", f"{metrics.get('Silhouette Score', 0.0):.4f}")
-                    if "Inertia" in metrics:
-                        st.metric("Inercia (Inertia)", f"{metrics.get('Inertia', 0.0):.2f}")
-                    elif "Noise points" in metrics:
-                        st.metric("Puntos de ruido", f"{metrics.get('Noise points', 0)}")
-                    elif "BIC" in metrics:
-                        st.metric("BIC Score", f"{metrics.get('BIC', 0.0):.2f}")
+                    st.metric("Silhouette Score (Manual)", f"{metrics.get('Silhouette Score (Manual)', 0.0):.4f}")
+                    if "Inertia (Manual)" in metrics:
+                        st.metric("Inercia (Manual)", f"{metrics.get('Inertia (Manual)', 0.0):.2f}")
 
 # ==============================================================================
 # PANTALLA 6: RESULTADOS DE IA & NLP
@@ -686,3 +812,99 @@ elif pantalla == "7. Zona de Descargas":
             )
         else:
             st.info("Entrene el modelo para poder visualizar el reporte.")
+
+# ==============================================================================
+# PANTALLA 8: HISTORIAL DE MODELOS
+# ==============================================================================
+elif pantalla == "8. Historial de Modelos":
+    st.markdown('<div class="section-header">8. Historial de Modelos y Aprendizaje Continuo</div>', unsafe_allow_html=True)
+    st.write("Aquí puedes visualizar el registro de todos los modelos entrenados previamente.")
+    
+    try:
+        df_hist = get_model_history()
+        if df_hist.empty:
+            st.info("Aún no hay modelos entrenados en el historial.")
+        else:
+            # Ordenar por fecha descendente
+            df_hist = df_hist.sort_values(by="Timestamp", ascending=False)
+            st.dataframe(df_hist, use_container_width=True)
+            
+            st.markdown("---")
+            st.markdown("### ♻️ Reutilizar Modelo del Historial")
+            st.write("Selecciona una sesión de entrenamiento por su nombre para cargar la IA con el conocimiento de ese momento.")
+            
+            if "Nombre_Sesion" not in df_hist.columns:
+                df_hist["Nombre_Sesion"] = "Sesión Antigüa"
+                
+            df_hist["Nombre_Sesion"] = df_hist["Nombre_Sesion"].fillna("Sin Nombre")
+            df_hist["Opcion_Dropdown"] = df_hist["Nombre_Sesion"].astype(str) + " (" + df_hist["Timestamp"].astype(str) + ")"
+            sesiones_unicas = [s for s in df_hist["Opcion_Dropdown"].unique().tolist() if str(s) != "nan" and pd.notnull(s)]
+            sesion_seleccionada = st.selectbox("Seleccione la Sesión de Entrenamiento:", sesiones_unicas)
+            
+            if st.button("Cargar e Inyectar en Sistema", use_container_width=True):
+                with st.spinner("Cargando y despertando a la IA..."):
+                    df_sesion = df_hist[df_hist["Opcion_Dropdown"] == sesion_seleccionada]
+                    
+                    if st.session_state.df_raw is None or st.session_state.df_raw.empty:
+                        st.error("No hay datos en la base de datos para predecir. El historial está disponible, pero debes 'Ingestar Datos' (Pantalla 1) antes de aplicar un modelo a los encuestados.")
+                    else:
+                        df_res = st.session_state.df_raw.copy()
+                        df_res["Cluster"] = -1
+                        all_metrics = {}
+                        modelos_paths = {}
+                        
+                        df_res["elemento_temp"] = df_res["signo"].map(SIGN_TO_ELEMENT)
+                        elementos_vars = {
+                            "Fuego": ["p1", "p2", "p3"],
+                            "Agua": ["p4", "p5", "p6"],
+                            "Aire": ["p7", "p8", "p9"],
+                            "Tierra": ["p10", "p11", "p12"]
+                        }
+                        
+                        algo_name = df_sesion.iloc[0]["Algoritmo"]
+                        
+                        for _, row in df_sesion.iterrows():
+                            elem = row["Elemento"]
+                            ruta = row["Ruta_Modelo"]
+                            
+                            if os.path.exists(ruta):
+                                modelo = joblib.load(ruta)
+                                features = elementos_vars[elem]
+                                df_elem_indices = df_res[df_res["elemento_temp"] == elem].index
+                                df_elem = df_res.loc[df_elem_indices].copy()
+                                
+                                if len(df_elem) > 0:
+                                    df_feat = df_elem[features].copy()
+                                    df_feat = df_feat.fillna(3)
+                                    # Predecir con el modelo cargado
+                                    labels = modelo.predict(df_feat.values)
+                                    df_res.loc[df_elem_indices, "Cluster"] = labels
+                                    
+                                modelos_paths[elem] = ruta
+                                all_metrics[elem] = {
+                                    "Inertia (Manual)": row.get("Inercia", 0.0),
+                                    "Silhouette Score (Manual)": row.get("Silueta", 0.0)
+                                }
+                        
+                        if modelos_paths:
+                            st.session_state.last_algorithm = algo_name
+                            st.session_state.df_results = df_res
+                            st.session_state.model_metrics = all_metrics
+                            st.session_state.last_model_path = list(modelos_paths.values())[0]
+                            st.session_state.modelos_paths_dict = modelos_paths
+                            st.success(f"¡Modelos de la sesión {sesion_seleccionada} recargados con éxito! Ve a la Pantalla 6 para ver los resultados.")
+                        else:
+                            st.error("No se encontraron los archivos .pkl asociados a esta sesión.")
+            
+            st.markdown("---")
+            # Botón para descargar el CSV de historial
+            csv_hist = df_hist.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Descargar Historial CSV",
+                data=csv_hist,
+                file_name="historial_modelos_zodiac.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+    except Exception as e:
+        st.error(f"No se pudo cargar el historial: {e}")

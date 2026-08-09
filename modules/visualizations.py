@@ -97,6 +97,49 @@ def plot_distribucion_signo(df):
         template="plotly_dark",
         hole=0.4
     )
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+    return fig
+
+def plot_histograma_poligono(serie, titulo="Histograma y Polígono de Frecuencias"):
+    """
+    Genera un histograma junto con su polígono de frecuencias.
+    """
+    serie_clean = serie.dropna()
+    if len(serie_clean) == 0:
+        return go.Figure()
+        
+    counts, bins = np.histogram(serie_clean, bins='sturges')
+    bins_centers = 0.5 * (bins[:-1] + bins[1:])
+    
+    fig = go.Figure()
+    
+    # Histograma
+    fig.add_trace(go.Bar(
+        x=bins_centers,
+        y=counts,
+        name='Frecuencia',
+        marker_color='#8b5cf6',
+        opacity=0.7
+    ))
+    
+    # Polígono de frecuencias
+    fig.add_trace(go.Scatter(
+        x=bins_centers,
+        y=counts,
+        mode='lines+markers',
+        name='Polígono',
+        line=dict(color='#d4af37', width=3),
+        marker=dict(size=8)
+    ))
+    
+    fig.update_layout(
+        title=titulo,
+        template="plotly_dark",
+        xaxis_title="Valor",
+        yaxis_title="Frecuencia",
+        barmode='overlay',
+        margin=dict(l=40, r=40, t=60, b=40)
+    )
     return fig
 
 def plot_matriz_correlacion(df_features):
@@ -122,3 +165,28 @@ def plot_matriz_correlacion(df_features):
         margin=dict(l=40, r=40, t=60, b=40)
     )
     return fig
+
+def plot_metodo_codo(k_values, inercias):
+    """
+    Genera la gráfica del Método del Codo para encontrar el número óptimo de clústeres.
+    """
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=k_values,
+        y=inercias,
+        mode='lines+markers',
+        name='Inercia (Manual)',
+        line=dict(color='#d4af37', width=3),
+        marker=dict(size=10, color='#8b5cf6')
+    ))
+    
+    fig.update_layout(
+        title="Método del Codo (Inercia Manual vs K)",
+        xaxis_title="Número de Clústeres (K)",
+        yaxis_title="Inercia (Manual)",
+        template="plotly_dark",
+        margin=dict(l=40, r=40, t=60, b=40)
+    )
+    
+    return fig
+
