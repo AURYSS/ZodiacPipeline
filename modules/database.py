@@ -32,8 +32,8 @@ def init_db():
     
     # Crear la tabla 'encuestas'
     # Definir campos numéricos y abiertos
-    likert_fields = ", ".join([f"p{i} INT" for i in range(1, 16)])
-    open_fields = ", ".join([f"p{i}a TEXT" for i in range(1, 16)])
+    likert_fields = ", ".join([f"p{i} INT" for i in range(1, 13)])
+    open_fields = ", ".join([f"p{i}a TEXT" for i in range(1, 13)])
     
     create_table_query = f"""
     CREATE TABLE IF NOT EXISTS encuestas (
@@ -60,8 +60,8 @@ def insertar_encuestas(df):
     cur = conn.cursor()
     
     # Asegurar orden exacto de columnas para la inserción
-    cols_likert = [f"p{i}" for i in range(1, 16)]
-    cols_open = [f"p{i}a" for i in range(1, 16)]
+    cols_likert = [f"p{i}" for i in range(1, 13)]
+    cols_open = [f"p{i}a" for i in range(1, 13)]
     columnas_ordenadas = ["edad", "genero", "signo"] + cols_likert + cols_open
     
     # Preparar datos: convertir NaN a None para evitar errores de tipo float nan en Postgres

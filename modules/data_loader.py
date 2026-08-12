@@ -86,8 +86,8 @@ def map_google_form_df(df):
         # Tierra: p10-p12 (indices de columnas 23, 25, 27) y textos (indices 24, 26, 28)
         
         # Inicializar todo como None
-        likert_vals = {f"p{p}": None for p in range(1, 16)}
-        open_texts = {f"p{p}a": None for p in range(1, 16)}
+        likert_vals = {f"p{p}": None for p in range(1, 13)}
+        open_texts = {f"p{p}a": None for p in range(1, 13)}
         
         # Fuego
         if len(row) > 5: likert_vals["p1"] = parse_likert_value(row.iloc[5])
@@ -162,8 +162,8 @@ def load_and_validate_csv(file_path_or_buffer):
             
     # Si es formato nativo estándar, realizar validaciones ordinarias
     required_cols = ["id", "edad", "genero", "signo"]
-    likert_cols = [f"p{i}" for i in range(1, 16)]
-    open_cols = [f"p{i}a" for i in range(1, 16)]
+    likert_cols = [f"p{i}" for i in range(1, 13)]
+    open_cols = [f"p{i}a" for i in range(1, 13)]
     
     missing_required = [col for col in required_cols if col not in df.columns]
     missing_likert = [col for col in likert_cols if col not in df.columns]
@@ -173,9 +173,9 @@ def load_and_validate_csv(file_path_or_buffer):
     if missing_required:
         errors.append(f"Faltan columnas obligatorias: {', '.join(missing_required)}")
     if missing_likert:
-        errors.append(f"Faltan preguntas Likert (p1 a p15): {', '.join(missing_likert)}")
+        errors.append(f"Faltan preguntas Likert (p1 a p12): {', '.join(missing_likert)}")
     if missing_open:
-        errors.append(f"Faltan preguntas abiertas (p1a a p15a): {', '.join(missing_open)}")
+        errors.append(f"Faltan preguntas abiertas (p1a a p12a): {', '.join(missing_open)}")
         
     if errors:
         return None, " | ".join(errors)
