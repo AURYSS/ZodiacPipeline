@@ -243,7 +243,7 @@ if pantalla == "1. Ingesta de Datos":
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.write("Suba el archivo CSV con las respuestas Likert (`p1`-`p15`) y respuestas abiertas (`p1a`-`p15a`).")
+        st.write("Suba el archivo CSV con las respuestas Likert (`p1`-`p12`) y respuestas abiertas (`p1a`-`p12a`).")
         uploaded_file = st.file_uploader("Subir dataset en formato .csv", type=["csv"])
         
         if uploaded_file is not None:
