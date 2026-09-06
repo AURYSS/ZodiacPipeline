@@ -1,3 +1,11 @@
+[theme]
+base="light"
+primaryColor="#ff9a9e"
+backgroundColor="#fdfbfb"
+secondaryBackgroundColor="#fef6f8"
+textColor="#333333"
+font="sans serif"
+
 [server]
 fileWatcherType = "none"
 maxUploadSize = 1000

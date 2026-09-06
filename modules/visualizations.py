@@ -19,7 +19,7 @@ def plot_pca_2d(df_pca, labels, hover_data=None):
         title="Reducción de Dimensionalidad PCA (2D)",
         hover_data=hover_data.columns.tolist() if hover_data is not None else None,
         color_discrete_sequence=px.colors.qualitative.Bold,
-        template="plotly_dark"
+        template="plotly_white"
     )
     fig.update_layout(margin=dict(l=0, r=0, t=40, b=0))
     return fig
@@ -40,7 +40,7 @@ def plot_pca_3d(df_pca, labels, hover_data=None):
         title="Visualización de Clústeres PCA (3D)",
         hover_data=hover_data.columns.tolist() if hover_data is not None else None,
         color_discrete_sequence=px.colors.qualitative.Bold,
-        template="plotly_dark"
+        template="plotly_white"
     )
     fig.update_layout(margin=dict(l=0, r=0, t=40, b=0))
     return fig
@@ -57,7 +57,7 @@ def plot_distribucion_signos_cluster(df_full):
         df_grouped, x="Cluster", y="Cantidad", color="signo",
         title="Distribución de Signos Zodiacales por Clúster",
         barmode="stack",
-        template="plotly_dark",
+        template="plotly_white",
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
     return fig
@@ -79,7 +79,7 @@ def plot_perfil_clusters(df_features, labels):
         df_melt, x="Pregunta", y="Promedio", color="Cluster",
         title="Perfil de Clústeres: Respuestas Promedio",
         barmode="group",
-        template="plotly_dark",
+        template="plotly_white",
         color_discrete_sequence=px.colors.qualitative.Safe
     )
     return fig
@@ -94,7 +94,7 @@ def plot_distribucion_signo(df):
     fig = px.pie(
         counts, names="Signo", values="Cantidad",
         title="Distribución General por Signo Zodiacal",
-        template="plotly_dark",
+        template="plotly_white",
         hole=0.4
     )
     fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -118,7 +118,7 @@ def plot_histograma_poligono(serie, titulo="Histograma y Polígono de Frecuencia
         x=bins_centers,
         y=counts,
         name='Frecuencia',
-        marker_color='#8b5cf6',
+        marker_color='#ff9a9e',
         opacity=0.7
     ))
     
@@ -128,13 +128,13 @@ def plot_histograma_poligono(serie, titulo="Histograma y Polígono de Frecuencia
         y=counts,
         mode='lines+markers',
         name='Polígono',
-        line=dict(color='#d4af37', width=3),
+        line=dict(color='#add8e6', width=3),
         marker=dict(size=8)
     ))
     
     fig.update_layout(
         title=titulo,
-        template="plotly_dark",
+        template="plotly_white",
         xaxis_title="Valor",
         yaxis_title="Frecuencia",
         barmode='overlay',
@@ -161,7 +161,7 @@ def plot_matriz_correlacion(df_features):
     
     fig.update_layout(
         title="Matriz de Correlación entre Preguntas Likert",
-        template="plotly_dark",
+        template="plotly_white",
         margin=dict(l=40, r=40, t=60, b=40)
     )
     return fig
@@ -176,15 +176,15 @@ def plot_metodo_codo(k_values, inercias):
         y=inercias,
         mode='lines+markers',
         name='Inercia (Manual)',
-        line=dict(color='#d4af37', width=3),
-        marker=dict(size=10, color='#8b5cf6')
+        line=dict(color='#add8e6', width=3),
+        marker=dict(size=10, color='#ff9a9e')
     ))
     
     fig.update_layout(
         title="Método del Codo (Inercia Manual vs K)",
         xaxis_title="Número de Clústeres (K)",
         yaxis_title="Inercia (Manual)",
-        template="plotly_dark",
+        template="plotly_white",
         margin=dict(l=40, r=40, t=60, b=40)
     )
     

@@ -60,126 +60,114 @@ SIGN_TO_ELEMENT = {
 
 # Configuración de página de Streamlit
 st.set_page_config(
-    page_title="AI.Studio - Zodiacal Clustering Pipeline",
-    page_icon="🔮",
+    page_title="AI.Studio - Soft Skills Pipeline",
+    page_icon="🌱",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Estilización premium personalizada (Zodiac Theme)
+# Estilización premium personalizada (Soft Skills Cute Theme)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Poppins:wght@300;400;600;800&display=swap');
     
-    /* Fondo Cósmico */
+    /* Decoración sutil de fondo */
     .stApp {
-        background: radial-gradient(circle at center, #1b0a31 0%, #080312 100%);
-        color: #e2e8f0;
-    }
-    
-    /* Agregar constelaciones sutiles simuladas mediante ruido radial o imagen (opcional, aquí usamos un gradiente profundo) */
-    .stApp::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
-                          radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
-                          radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
-        background-size: 550px 550px, 350px 350px, 250px 250px;
-        background-position: 0 0, 40px 60px, 130px 270px;
-        opacity: 0.15;
-        z-index: -1;
+        background-image: radial-gradient(#ffb6c1, rgba(255,182,193,.2) 2px, transparent 4px),
+                          radial-gradient(#add8e6, rgba(173,216,230,.15) 1px, transparent 3px);
+        background-size: 400px 400px, 250px 250px;
+        background-position: 0 0, 40px 60px;
     }
 
     h1, h2, h3, .main-title, .section-header {
-        font-family: 'Cinzel', serif !important;
+        font-family: 'Poppins', sans-serif !important;
+        color: #ff758c;
     }
 
-    p, span, div {
-        font-family: 'Inter', sans-serif;
+    p, span, div, li, td, th {
+        font-family: 'Nunito', sans-serif;
     }
 
     .main-title {
         font-size: 3rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #d4af37, #f3e5ab, #d4af37);
+        background: linear-gradient(135deg, #ff758c, #ff9a9e);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
-        text-shadow: 0px 4px 20px rgba(212, 175, 55, 0.3);
+        text-shadow: 0px 2px 4px rgba(255, 154, 158, 0.2);
     }
     .sub-title {
-        color: #bfa87a;
+        color: #555555;
         font-size: 1.2rem;
-        font-weight: 300;
+        font-weight: 600;
         margin-bottom: 2rem;
-        letter-spacing: 1px;
     }
     .section-header {
         font-size: 1.8rem;
         font-weight: 600;
-        color: #d4af37;
-        border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+        color: #ff758c;
+        border-bottom: 2px dashed #ff9a9e;
         padding-bottom: 0.5rem;
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
-        text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.2);
     }
     
-    /* Panel de Glassmorphism Cósmico */
+    /* Panel de Glassmorphism Claro */
     .metric-card {
-        background-color: rgba(27, 10, 49, 0.6) !important;
+        background-color: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(12px) !important;
-        border: 1px solid rgba(212, 175, 55, 0.25) !important;
-        border-radius: 12px;
+        border: 2px solid #fecfef !important;
+        border-radius: 16px;
         padding: 1.5rem;
         text-align: center;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 12px 0 rgba(255, 154, 158, 0.15);
         transition: transform 0.3s, box-shadow 0.3s;
     }
     .metric-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.15);
-        border: 1px solid rgba(212, 175, 55, 0.5) !important;
+        box-shadow: 0 8px 20px 0 rgba(255, 154, 158, 0.3);
+        border: 2px solid #ff9a9e !important;
     }
     
     .metric-value {
         font-size: 2.2rem;
         font-weight: 800;
-        font-family: 'Cinzel', serif;
-        background: linear-gradient(135deg, #f3e5ab, #d4af37);
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     .metric-label {
         font-size: 0.95rem;
-        color: #bfa87a;
+        color: #4a4a4a;
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-top: 5px;
+        font-weight: 700;
     }
     
-    /* Personalización de Sidebar */
-    [data-testid="stSidebar"] {
-        background-color: rgba(8, 3, 18, 0.85) !important;
-        border-right: 1px solid rgba(212, 175, 55, 0.15);
-    }
-    
-    /* Botones Dorados */
+    /* Botones Cutes */
     .stButton > button {
-        background: linear-gradient(135deg, #8b5cf6, #4c1d95) !important;
-        color: #f3e5ab !important;
-        border: 1px solid rgba(212, 175, 55, 0.5) !important;
-        border-radius: 8px !important;
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
         font-weight: 600 !important;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(255, 154, 158, 0.4) !important;
     }
     .stButton > button:hover {
-        background: linear-gradient(135deg, #9333ea, #5b21b6) !important;
-        border-color: #d4af37 !important;
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
-        transform: scale(1.02);
+        background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%) !important;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(255, 154, 158, 0.6) !important;
+    }
+
+    /* Tablas y dataframes */
+    .stDataFrame {
+        border-radius: 12px;
+        overflow: hidden;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -201,29 +189,28 @@ if "features_used" not in st.session_state:
     st.session_state.features_used = []
 
 # Título y Subtítulo
-st.markdown('<div class="main-title">🔮 Zodiacal Clustering Pipeline</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Extracción de Conocimiento en Base de Datos • Unidad IV: Análisis No Supervisado</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">🌱 Soft Skills Clustering Pipeline</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Análisis de Habilidades Blandas • Unidad IV: Análisis No Supervisado</div>', unsafe_allow_html=True)
 
-# Menú de Navegación Lateral (7 Pantallas)
-st.sidebar.image("static/logo.png", use_container_width=True)
-st.sidebar.markdown("### Navegación del Sistema")
+st.sidebar.markdown("## ⚙️ Panel de Control")
+st.sidebar.markdown("---")
+
 pantalla = st.sidebar.radio(
-    "Seleccione una pantalla:",
+    "Módulos Principales",
     [
-        "1. Ingesta de Datos",
-        "2. Visualizar Datos",
-        "3. Filtros y Exportación",
-        "4. Estadísticas Básicas",
-        "5. Entrenar Modelo",
-        "6. Resultados de IA & NLP",
-        "7. Zona de Descargas",
-        "8. Historial de Modelos"
-    ]
+        "📥 Importar Dataset",
+        "👁️ Explorador de Registros",
+        "🔍 Segmentación Avanzada",
+        "📊 Análisis Descriptivo",
+        "🧠 Motor de Machine Learning",
+        "💬 Insights Cualitativos",
+        "💾 Exportar Reportes",
+        "🕒 Registro de Experimentos"
+    ],
+    label_visibility="collapsed"
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Universidad Tecnológica del Norte de Guanajuato**")
-st.sidebar.markdown("**Ingeniería en Desarrollo y Gestión de Software**")
 
 # Intentar cargar datos de PostgreSQL si existen al inicio
 try:
@@ -231,13 +218,24 @@ try:
     if not df_db.empty and st.session_state.df_raw is None:
         st.session_state.df_raw = df_db
         st.session_state.df_filtered = df_db.copy()
+    db_status = "🟢 En Línea"
+    reg_count = len(df_db) if not df_db.empty else 0
 except Exception as e:
-    pass
+    db_status = "🔴 Error de Conexión"
+    reg_count = 0
 
+st.sidebar.markdown("### 📊 Estado del Sistema")
+st.sidebar.markdown(f"**PostgreSQL:** {db_status}")
+st.sidebar.markdown(f"**Registros:** `{reg_count}` en memoria")
+
+with st.sidebar.expander("ℹ️ Detalles del Entorno"):
+    st.caption("Pipeline Version: 2.1.0")
+    st.caption("Environment: Producción")
+    st.caption("ML Backend: scikit-learn")
 # ==============================================================================
 # PANTALLA 1: INGESTA DE DATOS
 # ==============================================================================
-if pantalla == "1. Ingesta de Datos":
+if pantalla == "📥 Importar Dataset":
     st.markdown('<div class="section-header">1. Ingesta y Persistencia</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
@@ -308,7 +306,7 @@ if pantalla == "1. Ingesta de Datos":
 # ==============================================================================
 # PANTALLA 2: VISUALIZAR DATOS
 # ==============================================================================
-elif pantalla == "2. Visualizar Datos":
+elif pantalla == "👁️ Explorador de Registros":
     st.markdown('<div class="section-header">2. Consulta Tabular</div>', unsafe_allow_html=True)
     
     # Intentar recargar desde la BD
@@ -336,7 +334,7 @@ elif pantalla == "2. Visualizar Datos":
 # ==============================================================================
 # PANTALLA 3: FILTROS Y EXPORTACIÓN
 # ==============================================================================
-elif pantalla == "3. Filtros y Exportación":
+elif pantalla == "🔍 Segmentación Avanzada":
     st.markdown('<div class="section-header">3. Segmentación y Filtros de Información</div>', unsafe_allow_html=True)
     
     try:
@@ -387,7 +385,7 @@ elif pantalla == "3. Filtros y Exportación":
 # ==============================================================================
 # PANTALLA 4: ESTADÍSTICAS BÁSICAS
 # ==============================================================================
-elif pantalla == "4. Estadísticas Básicas":
+elif pantalla == "📊 Análisis Descriptivo":
     st.markdown('<div class="section-header">4. Estadísticas Descriptivas (Algoritmos Propios)</div>', unsafe_allow_html=True)
     
     if st.session_state.df_filtered is None or len(st.session_state.df_filtered) == 0:
@@ -503,7 +501,7 @@ elif pantalla == "4. Estadísticas Básicas":
 # ==============================================================================
 # PANTALLA 5: ENTRENAR MODELO
 # ==============================================================================
-elif pantalla == "5. Entrenar Modelo":
+elif pantalla == "🧠 Motor de Machine Learning":
     st.markdown('<div class="section-header">5. Configuración y Entrenamiento del Modelo</div>', unsafe_allow_html=True)
     
     try:
@@ -630,7 +628,7 @@ elif pantalla == "5. Entrenar Modelo":
 # ==============================================================================
 # PANTALLA 6: RESULTADOS DE IA & NLP
 # ==============================================================================
-elif pantalla == "6. Resultados de IA & NLP":
+elif pantalla == "💬 Insights Cualitativos":
     st.markdown('<div class="section-header">6. Resultados y Análisis Cualitativo NLP</div>', unsafe_allow_html=True)
     
     if st.session_state.df_results is None:
@@ -697,7 +695,7 @@ elif pantalla == "6. Resultados de IA & NLP":
 # ==============================================================================
 # PANTALLA 7: ZONA DE DESCARGAS
 # ==============================================================================
-elif pantalla == "7. Zona de Descargas":
+elif pantalla == "💾 Exportar Reportes":
     st.markdown('<div class="section-header">7. Exportación e Informes</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -816,7 +814,7 @@ elif pantalla == "7. Zona de Descargas":
 # ==============================================================================
 # PANTALLA 8: HISTORIAL DE MODELOS
 # ==============================================================================
-elif pantalla == "8. Historial de Modelos":
+elif pantalla == "🕒 Registro de Experimentos":
     st.markdown('<div class="section-header">8. Historial de Modelos y Aprendizaje Continuo</div>', unsafe_allow_html=True)
     st.write("Aquí puedes visualizar el registro de todos los modelos entrenados previamente.")
     
